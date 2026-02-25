@@ -170,15 +170,15 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                             <div className="pt-2">
                                 <label className="text-xs uppercase tracking-widest text-purple-400 font-bold">2. Forma Ta De Energie</label>
                                 <select name="coffee_type" className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-2 appearance-none">
-                                    <option value="espresso">Espresso / Double Espresso</option>
-                                    <option value="americano">Americano / Long Black</option>
-                                    <option value="latte_macchiato">Latte Macchiato</option>
-                                    <option value="flat_white">Flat White</option>
-                                    <option value="caffe_latte">Caffe Latte</option>
-                                    <option value="matcha_tonic">Matcha Tonic</option>
-                                    <option value="chai_tonic">Chai Tonic (Raspberry)</option>
-                                    <option value="iced_latte">Iced Latte</option>
-                                    <option value="limonada">Limonadă</option>
+                                    <option value="pura">Pură (Pentru cei care vor boost-ul instant)</option>
+                                    <option value="lunga">Lungă (Băutură lungă, intensă, fără lapte)</option>
+                                    <option value="intensa">Intensă (Balansul perfect între cafea și micro-spumă)</option>
+                                    <option value="clasica">Clasică (Cafeaua ta de zi cu zi, cu lapte bine aerat)</option>
+                                    <option value="generoasa">Generoasă (Cafea domolită cu mult lapte fin)</option>
+                                    <option value="laptoasa">Lăptoasă (Lapte pufos, atins ușor de un singur shot de cafea)</option>
+                                    <option value="dulce">Dulce (Răsfăț absolut, cu siropuri și texturi de desert)</option>
+                                    <option value="glaciara">Glaciară (Cafeaua clasică, dar pe gheață sau blenduită)</option>
+                                    <option value="alternativa">Alternativă (Boost din natură, tonice efervescente și fresh-uri)</option>
                                 </select>
                             </div>
 
