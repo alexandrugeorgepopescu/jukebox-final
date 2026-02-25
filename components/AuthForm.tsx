@@ -170,15 +170,15 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                             <div className="pt-2">
                                 <label className="text-xs uppercase tracking-widest text-purple-400 font-bold">2. Forma Ta De Energie</label>
                                 <select name="coffee_type" className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-2 appearance-none">
-                                    <option value="pura">Pură (Pentru cei care vor boost-ul instant)</option>
-                                    <option value="lunga">Lungă (Băutură lungă, intensă, fără lapte)</option>
-                                    <option value="intensa">Intensă (Balansul perfect între cafea și micro-spumă)</option>
-                                    <option value="clasica">Clasică (Cafeaua ta de zi cu zi, cu lapte bine aerat)</option>
-                                    <option value="generoasa">Generoasă (Cafea domolită cu mult lapte fin)</option>
-                                    <option value="laptoasa">Lăptoasă (Lapte pufos, atins ușor de un singur shot de cafea)</option>
-                                    <option value="dulce">Dulce (Răsfăț absolut, cu siropuri și texturi de desert)</option>
-                                    <option value="glaciara">Glaciară (Cafeaua clasică, dar pe gheață sau blenduită)</option>
-                                    <option value="alternativa">Alternativă (Boost din natură, tonice efervescente și fresh-uri)</option>
+                                    <option value="pura">Pură (Pentru cei care vor boost-ul instant) ☕ Espresso, Espresso Dublu</option>
+                                    <option value="lunga">Lungă (Băutură lungă, intensă, fără lapte) ☕ Americano, Long Black</option>
+                                    <option value="intensa">Intensă (Balansul perfect între cafea și micro-spumă) ☕ Flat White</option>
+                                    <option value="clasica">Clasică (Cafeaua ta de zi cu zi, cu lapte bine aerat) ☕ Cappuccino</option>
+                                    <option value="generoasa">Generoasă (Cafea domolită cu mult lapte fin) ☕ Caffe Latte, Large Latte</option>
+                                    <option value="laptoasa">Lăptoasă (Lapte pufos, atins ușor de un singur shot de cafea) ☕ Latte Macchiato</option>
+                                    <option value="dulce">Dulce (Răsfăț absolut, cu siropuri și texturi de desert) ☕ Caramel Latte, Ciocolată Caldă, Babyccino</option>
+                                    <option value="glaciara">Glaciară (Cafeaua clasică, dar pe gheață sau blenduită) ☕ Iced Espresso, Iced Latte, Frozen Cappuccino</option>
+                                    <option value="alternativa">Alternativă (Boost din natură, tonice efervescente și fresh-uri) ☕ Orange Espresso, Chai Tonic (Raspberry), Matcha Tonic, Matcha Latte/Orange, Ceai Infuzie, Fresh, Limonadă, Răcoritoare</option>
                                 </select>
                             </div>
 
