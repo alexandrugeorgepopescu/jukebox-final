@@ -54,7 +54,7 @@ export default function Home() {
 
             {/* Header */}
             <div className="text-center mb-8 z-10 pt-10">
-                <h1 className="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)]">
+                <h1 className="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 pr-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)]">
                     REWIND JUKEBOX
                 </h1>
                 <p className="text-[10px] tracking-[0.4em] text-purple-400 uppercase font-bold animate-pulse">
