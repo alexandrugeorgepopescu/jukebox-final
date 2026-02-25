@@ -12,10 +12,12 @@ const MUSIC_CATEGORIES: { id: MusicCategory; label: string; desc: string; vibe: 
     { id: "CHILL_FLOW", label: "CHILL FLOW", desc: "Calmare fără plictiseală", vibe: "Slow down." },
     { id: "GOOD_VIBE", label: "GOOD VIBE", desc: "Fericire pură, ușoară", vibe: "Mood upgrade." },
     { id: "BASS_MODE", label: "BASS MODE", desc: "Energie care te pornește", vibe: "Feel it." },
+    { id: "SOUL_SELECT", label: "SOUL SELECT", desc: "Pentru pasionații de voci calde", vibe: "Smooth and deep." },
+    { id: "MAIN_CHARACTER", label: "MAIN CHARACTER", desc: "Când viața e un film", vibe: "Center stage." },
 ];
 
 const TRIBES = [
-    { id: "retro", name: "The Retro Souls", icon: <Star className="w-5 h-5 text-yellow-500" />, desc: "Pentru cei care vânează vibe-ul clasic." },
+    { id: "retro", name: "Retro Souls", icon: <Star className="w-5 h-5 text-yellow-500" />, desc: "Pentru cei care vânează vibe-ul clasic." },
     { id: "energy", name: "Energy Junkies", icon: <Zap className="w-5 h-5 text-blue-400" />, desc: "Trăiesc pe BPM mare și double espresso." },
     { id: "chill", name: "Chill Phantoms", icon: <Ghost className="w-5 h-5 text-purple-400" />, desc: "Smooth, invizibili, mereu prezenți." },
 ];
@@ -168,10 +170,15 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                             <div className="pt-2">
                                 <label className="text-xs uppercase tracking-widest text-purple-400 font-bold">2. Forma Ta De Energie</label>
                                 <select name="coffee_type" className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-2 appearance-none">
-                                    <option value="espresso">Espresso (Putere Pură)</option>
-                                    <option value="latte">Latte (Chill Morning)</option>
-                                    <option value="flat_white">Flat White (Echilibru perfect)</option>
-                                    <option value="filter">V60 / Filtru (Explorator)</option>
+                                    <option value="espresso">Espresso / Double Espresso</option>
+                                    <option value="americano">Americano / Long Black</option>
+                                    <option value="latte_macchiato">Latte Macchiato</option>
+                                    <option value="flat_white">Flat White</option>
+                                    <option value="caffe_latte">Caffe Latte</option>
+                                    <option value="matcha_tonic">Matcha Tonic</option>
+                                    <option value="chai_tonic">Chai Tonic (Raspberry)</option>
+                                    <option value="iced_latte">Iced Latte</option>
+                                    <option value="limonada">Limonadă</option>
                                 </select>
                             </div>
 
