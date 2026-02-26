@@ -139,7 +139,7 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Poreclă (Nickname)</label>
                                     <div className="relative mt-1">
                                         <Flame className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-500" />
-                                        <input type="text" name="nickname" required placeholder="Luptătorul Rewind" className="w-full bg-black/50 p-4 pl-10 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors" />
+                                        <input type="text" name="nickname" required placeholder="ex: Alex" className="w-full bg-black/50 p-4 pl-10 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors" />
                                     </div>
                                 </div>
                                 <div>
@@ -170,15 +170,15 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                             <div className="pt-2">
                                 <label className="text-xs uppercase tracking-widest text-purple-400 font-bold">2. Forma Ta De Energie</label>
                                 <select name="coffee_type" className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-2 appearance-none">
-                                    <option value="pura">Pură (Pentru cei care vor boost-ul instant) ☕ Espresso, Espresso Dublu</option>
-                                    <option value="lunga">Lungă (Băutură lungă, intensă, fără lapte) ☕ Americano, Long Black</option>
-                                    <option value="intensa">Intensă (Balansul perfect între cafea și micro-spumă) ☕ Flat White</option>
-                                    <option value="clasica">Clasică (Cafeaua ta de zi cu zi, cu lapte bine aerat) ☕ Cappuccino</option>
-                                    <option value="generoasa">Generoasă (Cafea domolită cu mult lapte fin) ☕ Caffe Latte, Large Latte</option>
-                                    <option value="laptoasa">Lăptoasă (Lapte pufos, atins ușor de un singur shot de cafea) ☕ Latte Macchiato</option>
-                                    <option value="dulce">Dulce (Răsfăț absolut, cu siropuri și texturi de desert) ☕ Caramel Latte, Ciocolată Caldă, Babyccino</option>
-                                    <option value="glaciara">Glaciară (Cafeaua clasică, dar pe gheață sau blenduită) ☕ Iced Espresso, Iced Latte, Frozen Cappuccino</option>
-                                    <option value="alternativa">Alternativă (Boost din natură, tonice efervescente și fresh-uri) ☕ Orange Espresso, Chai Tonic (Raspberry), Matcha Tonic, Matcha Latte/Orange, Ceai Infuzie, Fresh, Limonadă, Răcoritoare</option>
+                                    <option value="pura" className="bg-zinc-900 text-[#fbe485]">⚡ Pură (Boost-ul instant) - Espresso, Espresso Dublu</option>
+                                    <option value="lunga" className="bg-zinc-900 text-[#fbe485]">💧 Lungă (Boost prelungit) - Americano, Long Black</option>
+                                    <option value="intensa" className="bg-zinc-900 text-[#fbe485]">🤎 Intensă (Balansul perfect) - Flat White</option>
+                                    <option value="clasica" className="bg-zinc-900 text-[#fbe485]">☁️ Clasică (Cafeaua ta de zi cu zi) - Cappuccino</option>
+                                    <option value="generoasa" className="bg-zinc-900 text-[#fbe485]">🤗 Generoasă (Cafea domolită) - Caffe Latte, Large Latte</option>
+                                    <option value="laptoasa" className="bg-zinc-900 text-[#fbe485]">🤍 Lăptoasă (Atinsă ușor de cafea) - Latte Macchiato</option>
+                                    <option value="dulce" className="bg-zinc-900 text-[#fbe485]">🍫 Dulce (Răsfăț absolut) - Caramel Latte, Ciocolată Caldă, Babyccino</option>
+                                    <option value="glaciara" className="bg-zinc-900 text-[#fbe485]">🧊 Glaciară (Ice, ice baby) - Iced Latte, Iced Espresso, Frozen Cappuccino</option>
+                                    <option value="alternativa" className="bg-zinc-900 text-[#fbe485]">🌿 Alternativă (Boost din natură) - Matcha Latte, Orange Espresso, Limonadă</option>
                                 </select>
                             </div>
 
