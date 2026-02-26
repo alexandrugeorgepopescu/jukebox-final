@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { User } from "@/lib/types";
 import { motion } from "framer-motion";
-import { Coffee, CupSoda } from "lucide-react";
 import { logDailyDrink } from "@/app/actions/gamification";
 
 interface DailyDrinkPromptProps {
@@ -12,10 +11,12 @@ interface DailyDrinkPromptProps {
 }
 
 const DRINKS = [
-    { id: "espresso", name: "Espresso", icon: <Coffee className="w-6 h-6" />, desc: "Doza pură de concentrare" },
-    { id: "latte", name: "Latte / Cappuccino", icon: <CupSoda className="w-6 h-6" />, desc: "Dimineata e mai bună cu lapte" },
-    { id: "filter", name: "V60 / Batch Brew", icon: <Coffee className="w-6 h-6" />, desc: "Pentru drum lung" },
-    { id: "cold_brew", name: "Cold Brew / Iced", icon: <CupSoda className="w-6 h-6 text-blue-400" />, desc: "Răcoritor și intens" }
+    { id: "espresso", name: "Espresso Pur", icon: "⚡", desc: "Scurt și la obiect.", badge: "The Purist" },
+    { id: "americano", name: "Americano", icon: "💧", desc: "Energie pentru cursă lungă.", badge: "Maratonistul" },
+    { id: "flat_white", name: "Flat White", icon: "🤎", desc: "2 shot-uri, echilibru perfect.", badge: "The Balanced" },
+    { id: "latte_macchiato", name: "Latte & Macchiato", icon: "☁️", desc: "Generos și catifelat.", badge: "Milk Lover" },
+    { id: "iced", name: "Ice & Frozen", icon: "🧊", desc: "Cafeaua ta preferată, pe gheață.", badge: "Ice Ice Baby" },
+    { id: "tonic_matcha", name: "Tonice & Matcha", icon: "🌿", desc: "Efervescent și alternativ.", badge: "Exploratorul" }
 ];
 
 export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptProps) {
@@ -51,13 +52,16 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                             key={drink.id}
                             disabled={loading}
                             onClick={() => handleSelect(drink.id)}
-                            className="flex flex-col items-center justify-center p-6 bg-black/40 border border-white/5 rounded-2xl hover:bg-purple-500/10 hover:border-purple-500/50 transition-all group disabled:opacity-50"
+                            className="flex flex-col items-center justify-center p-4 bg-black/40 border border-white/5 rounded-2xl hover:bg-purple-500/10 hover:border-purple-500/50 transition-all group disabled:opacity-50 relative overflow-hidden"
                         >
-                            <div className="text-purple-400 group-hover:scale-110 transition-transform mb-3">
+                            <div className="absolute top-0 right-0 bg-purple-500/20 text-purple-300 text-[8px] font-bold px-2 py-1 rounded-bl-lg uppercase tracking-wider backdrop-blur-md border-b border-l border-purple-500/30">
+                                {drink.badge}
+                            </div>
+                            <div className="text-3xl group-hover:scale-110 transition-transform mb-2 mt-2">
                                 {drink.icon}
                             </div>
-                            <span className="font-bold text-white text-sm">{drink.name}</span>
-                            <span className="text-[10px] text-zinc-500 mt-1">{drink.desc}</span>
+                            <span className="font-bold text-white text-sm mb-1">{drink.name}</span>
+                            <span className="text-[10px] text-zinc-500 px-1">{drink.desc}</span>
                         </button>
                     ))}
                 </div>
