@@ -139,11 +139,11 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                                     <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Poreclă (Nickname)</label>
                                     <div className="relative mt-1">
                                         <Flame className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-500" />
-                                        <input type="text" name="nickname" required placeholder="ex: Alex" className="w-full bg-black/50 p-4 pl-10 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors" />
+                                        <input type="text" name="nickname" required placeholder="ex: Dj Brew" className="w-full bg-black/50 p-4 pl-10 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors" />
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Data de naștere (Pt cadouri)</label>
+                                    <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Ziua ta (Pt cadouri)</label>
                                     <input type="date" name="birthday" required className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-1 [color-scheme:dark]" />
                                 </div>
                             </div>
@@ -239,3 +239,4 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
         </div>
     );
 }
+
