@@ -138,14 +138,32 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
                         ) : (
                             <div className="space-y-3">
                                 {userData.playlists.map((p, i) => (
-                                    <div key={i} className="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl hover:border-purple-500/30 transition-colors">
+                                    <div key={i} className="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl hover:border-purple-500/30 transition-colors flex flex-col">
                                         <div className="flex justify-between items-start mb-2">
-                                            <h4 className="font-bold text-white text-sm">{p.songs?.full_title}</h4>
-                                            <span className="text-[9px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded-sm uppercase">
+                                            <h4 className="font-bold text-white text-sm pr-2">{p.songs?.full_title}</h4>
+                                            <span className="text-[9px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded-sm uppercase shrink-0">
                                                 {new Date(p.listened_at).toLocaleDateString()}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-purple-400/80 italic">"{p.songs?.fun_message}"</p>
+                                        <p className="text-xs text-purple-400/80 italic mb-3">"{p.songs?.fun_message}"</p>
+
+                                        <div className="flex gap-2 mt-auto">
+                                            {p.songs?.yt_url && (
+                                                <a href={p.songs.yt_url} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#FF0000]/10 border border-[#FF0000]/30 text-[#FF0000] py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest text-center hover:bg-[#FF0000]/20 transition-colors">
+                                                    YouTube
+                                                </a>
+                                            )}
+                                            {p.songs?.spotify_url && (
+                                                <a href={p.songs.spotify_url} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#1DB954]/10 border border-[#1DB954]/30 text-[#1DB954] py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest text-center hover:bg-[#1DB954]/20 transition-colors">
+                                                    Spotify
+                                                </a>
+                                            )}
+                                            {p.songs?.apple_url && (
+                                                <a href={p.songs.apple_url} target="_blank" rel="noopener noreferrer" className="flex-1 bg-[#FA243C]/10 border border-[#FA243C]/30 text-[#FA243C] py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest text-center hover:bg-[#FA243C]/20 transition-colors">
+                                                    Apple
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
