@@ -109,18 +109,30 @@ export default function Jukebox({ user }: JukeboxProps) {
                         {/* Prize Card */}
                         {result?.destinyPrize && (
                             <div className="bg-gradient-to-br from-yellow-400 to-amber-600 text-black p-6 rounded-[2rem] shadow-[0_0_40px_rgba(251,191,36,0.4)] w-full text-center transform hover:scale-[1.02] transition-transform relative overflow-hidden">
-                                <Sparkles className="absolute top-4 right-4 text-black/20 w-12 h-12" />
-                                <p className="font-bold text-[10px] uppercase tracking-widest mb-2 opacity-70">Destinul a decis:</p>
-                                <h3 className="text-2xl font-black uppercase leading-none tracking-tighter">{result.destinyPrize}</h3>
-                                <p className="text-[10px] font-bold mt-2 opacity-60">S-a creat un voucher virtual în portofel.</p>
+                                <Sparkles className="absolute top-4 right-4 text-black/20 w-12 h-12 animate-pulse" />
+                                <p className="font-bold text-[10px] uppercase tracking-widest mb-2 opacity-70">🌟 Destinul a decis:</p>
+                                <h3 className="text-2xl font-black uppercase leading-none tracking-tighter drop-shadow-md">{result.destinyPrize}</h3>
+                                <p className="text-[10px] font-bold mt-2 opacity-60 bg-black/10 inline-block px-3 py-1 rounded-full">S-a creat un voucher virtual în portofel.</p>
                             </div>
                         )}
 
                         {/* Links */}
                         <div className="w-full flex flex-col gap-3 mt-4">
-                            <a href={result?.yt} target="_blank" rel="noopener noreferrer" className="w-full bg-[#FF0000]/20 border border-[#FF0000]/50 text-white py-4 rounded-xl font-bold uppercase tracking-wide hover:bg-[#FF0000]/30 transition-all flex items-center justify-center gap-2">
-                                <span>▶</span> YouTube
-                            </a>
+                            {result?.yt && (
+                                <a href={result.yt} target="_blank" rel="noopener noreferrer" className="w-full bg-[#FF0000]/20 border border-[#FF0000]/50 text-white py-4 rounded-xl font-bold uppercase tracking-wide hover:bg-[#FF0000]/30 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,0,0,0.2)]">
+                                    <span className="text-xl">▶</span> YouTube
+                                </a>
+                            )}
+                            {result?.spotify && (
+                                <a href={result.spotify} target="_blank" rel="noopener noreferrer" className="w-full bg-[#1DB954]/20 border border-[#1DB954]/50 text-white py-4 rounded-xl font-bold uppercase tracking-wide hover:bg-[#1DB954]/30 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(29,185,84,0.2)]">
+                                    <span className="text-xl">🎵</span> Spotify
+                                </a>
+                            )}
+                            {result?.apple && (
+                                <a href={result.apple} target="_blank" rel="noopener noreferrer" className="w-full bg-[#FA243C]/20 border border-[#FA243C]/50 text-white py-4 rounded-xl font-bold uppercase tracking-wide hover:bg-[#FA243C]/30 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(250,36,60,0.2)]">
+                                    <span className="text-xl">🍎</span> Apple Music
+                                </a>
+                            )}
                         </div>
 
                         <button onClick={() => setResult(null)} className="mt-4 text-zinc-500 hover:text-white uppercase text-[10px] font-bold tracking-[0.4em] underline decoration-zinc-700 underline-offset-8 transition-colors">
