@@ -2,7 +2,10 @@
 
 import { supabase } from "@/lib/supabase";
 
+import { unstable_noStore as noStore } from 'next/cache';
+
 export async function getUserData(userId: string) {
+    noStore(); // dezactivează cache-ul Next.js pt rezultate live
     // Fetch Playlist
     const { data: playlists } = await supabase
         .from('user_playlists')
