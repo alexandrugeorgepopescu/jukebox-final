@@ -249,9 +249,9 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                         <h2 className="text-2xl font-black text-white mb-2">PIN Barista</h2>
                         <p className="text-zinc-400 text-sm mb-6">Înmânează telefonul baristei să introducă codul secret.</p>
 
-                        <div className="flex justify-center gap-3 mb-6">
-                            {[0, 1, 2, 3].map(i => (
-                                <div key={i} className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center text-xl font-black ${pin[i] ? 'border-purple-500 text-white bg-purple-500/10' : 'border-zinc-700 text-zinc-700'}`}>
+                        <div className="flex justify-center gap-1 mb-6">
+                            {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                                <div key={i} className={`w-9 h-9 rounded-xl border-2 flex items-center justify-center text-base font-black ${pin[i] ? 'border-purple-500 text-white bg-purple-500/10' : 'border-zinc-700 text-zinc-700'}`}>
                                     {pin[i] ? '●' : '–'}
                                 </div>
                             ))}
@@ -263,7 +263,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                                 <button key={i} disabled={!k}
                                     onClick={() => {
                                         if (k === '⌫') setPin(p => p.slice(0, -1));
-                                        else if (pin.length < 4) setPin(p => p + k);
+                                        else if (pin.length < 8) setPin(p => p + k);
                                     }}
                                     className={`h-12 rounded-xl font-bold text-lg transition-all ${k ? 'bg-zinc-800 text-white hover:bg-purple-500/20 active:scale-95' : 'invisible'}`}>
                                     {k}
@@ -273,7 +273,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
 
                         {error && <p className="text-red-400 text-xs mb-3">{error}</p>}
 
-                        <button onClick={handlePinSubmit} disabled={pin.length < 6 || loading}
+                        <button onClick={handlePinSubmit} disabled={pin.length < 8 || loading}
                             className="w-full bg-purple-500 hover:bg-purple-400 text-white font-black py-4 rounded-2xl uppercase tracking-widest disabled:opacity-40 transition-all">
                             {loading ? "SE VALIDEAZĂ..." : "✓ VALIDEAZĂ"}
                         </button>
