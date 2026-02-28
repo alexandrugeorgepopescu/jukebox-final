@@ -15,6 +15,7 @@ export interface User {
     nickname?: string;
     birthDate?: string;
     tribeId?: string;
+    isTester?: boolean;
 }
 
 export interface Song {

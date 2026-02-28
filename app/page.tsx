@@ -7,6 +7,7 @@ import Jukebox from "@/components/Jukebox";
 import UserProfile from "@/components/UserProfile";
 import { User } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
+import { checkBirthdayReward } from "@/app/actions/user";
 
 export default function Home() {
     const [user, setUser] = useState<User | null>(null);
@@ -22,16 +23,18 @@ export default function Home() {
                 // Fetch profile
                 const { data } = await supabase.from("users").select("*").eq("id", session.user.id).single();
                 if (data) {
-                    setUser({
+                    const mappedUser: User = {
                         id: session.user.id,
                         name: data.name,
                         email: session.user.email,
                         musicPreference: data.music_preferences,
                         coffeePreference: data.coffee_preference,
-                    });
-                    // In a real app we would check if they already bought a coffee today "coffee_purchases"
-                    // For UI demo, we assume they need to log it now:
-                    // setDrinkLogged(true) if logged
+                        birthDate: data.birth_date,
+                        isTester: data.is_tester || false,
+                    };
+                    setUser(mappedUser);
+                    // Check birthday reward
+                    checkBirthdayReward(session.user.id, data.birth_date);
                 }
             }
             setIsLoading(false);
@@ -54,7 +57,7 @@ export default function Home() {
 
             {/* Header */}
             <div className="text-center mb-8 z-10 pt-10">
-                <h1 className="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 pr-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)]">
+                <h1 className="text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)]">
                     REWIND JUKEBOX
                 </h1>
                 <p className="text-[10px] tracking-[0.4em] text-purple-400 uppercase font-bold animate-pulse">

@@ -22,7 +22,7 @@ export default function Jukebox({ user }: JukeboxProps) {
         setErrorData(null);
 
         // Fetch securely from server
-        const res = await performDrop(user.id, user.musicPreference || []);
+        const res = await performDrop(user.id, user.musicPreference || [], user.isTester);
 
         setTimeout(() => { // Keep the spin for suspense
             setIsSpinning(false);

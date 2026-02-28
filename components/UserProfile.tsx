@@ -1,20 +1,27 @@
 "use client";
-import React from "react";
 
 import { useState, useEffect } from "react";
 import { User } from "@/lib/types";
-import { motion } from "framer-motion";
-import { X, Gift, Music, CheckCircle2, Ticket } from "lucide-react";
-import { getUserData, redeemReward } from "@/app/actions/user";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, Gift, Music, CheckCircle2, Ticket, Megaphone, Coffee } from "lucide-react";
+import { getUserData, redeemReward, getAnnouncements } from "@/app/actions/user";
 
 interface UserProfileProps {
     user: User;
     onClose: () => void;
 }
 
+const CATEGORY_COLORS: Record<string, string> = {
+    promo: "from-purple-900/60 to-indigo-900/60 border-purple-500/40",
+    event: "from-amber-900/60 to-orange-900/60 border-amber-500/40",
+    menu: "from-emerald-900/60 to-teal-900/60 border-emerald-500/40",
+    update: "from-blue-900/60 to-cyan-900/60 border-blue-500/40",
+};
+
 export default function UserProfile({ user, onClose }: UserProfileProps) {
-    const [activeTab, setActiveTab] = useState<"vouchers" | "playlist">("vouchers");
-    const [userData, setUserData] = useState<{ playlists: any[], rewards: any[] }>({ playlists: [], rewards: [] });
+    const [activeTab, setActiveTab] = useState<"vouchers" | "playlist" | "news">("vouchers");
+    const [userData, setUserData] = useState<{ playlists: any[], rewards: any[], coffeeCount: number }>({ playlists: [], rewards: [], coffeeCount: 0 });
+    const [announcements, setAnnouncements] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [redeeming, setRedeeming] = useState<string | null>(null);
 
@@ -24,8 +31,12 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
 
     const loadData = async () => {
         setLoading(true);
-        const data = await getUserData(user.id);
+        const [data, news] = await Promise.all([
+            getUserData(user.id),
+            getAnnouncements()
+        ]);
         setUserData(data);
+        setAnnouncements(news);
         setLoading(false);
     };
 
@@ -33,13 +44,17 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
         if (confirm("Ești sigur(ă)? Acest buton trebuie apăsat doar în fața Barista-ului Rewind!")) {
             setRedeeming(rewardId);
             await redeemReward(rewardId);
-            await loadData(); // refresh list
+            await loadData();
             setRedeeming(null);
         }
     };
 
     const activeVouchers = userData.rewards.filter(r => !r.redeemed && new Date(r.expires_at) > new Date());
     const pastVouchers = userData.rewards.filter(r => r.redeemed || new Date(r.expires_at) <= new Date());
+
+    // Coffee loyalty progress
+    const coffeeCycle = userData.coffeeCount % 8;
+    const coffeeProgress = (coffeeCycle / 8) * 100;
 
     return (
         <motion.div
@@ -49,10 +64,10 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
             className="fixed inset-y-0 right-0 w-full max-w-md bg-zinc-950 border-l border-zinc-800 shadow-2xl z-50 flex flex-col"
         >
             {/* Header */}
-            <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50">
+            <div className="p-5 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50">
                 <div>
                     <h2 className="text-xl font-black text-white">{user.name}</h2>
-                    <p className="text-xs text-purple-400 font-bold uppercase tracking-widest mt-1">
+                    <p className="text-xs text-purple-400 font-bold uppercase tracking-widest mt-0.5">
                         TRIBAL ID: {user.id.substring(0, 8).toUpperCase()}
                     </p>
                 </div>
@@ -61,32 +76,64 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
                 </button>
             </div>
 
+            {/* Coffee Loyalty Bar */}
+            <div className="px-5 py-3 bg-zinc-900/30 border-b border-zinc-800">
+                <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-1.5 text-xs text-zinc-400 font-bold uppercase tracking-widest">
+                        <Coffee className="w-3.5 h-3.5 text-amber-400" />
+                        Loyalty Cafele
+                    </div>
+                    <span className="text-xs font-black text-amber-400">{coffeeCycle}/8 → cafea gratuită</span>
+                </div>
+                <div className="h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <motion.div
+                        className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${coffeeProgress}%` }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                    />
+                </div>
+                <div className="flex justify-between mt-1">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
+                        <div key={n} className={`w-4 h-4 rounded-full border text-[8px] flex items-center justify-center font-black ${n <= coffeeCycle ? 'bg-amber-400 border-amber-400 text-black' : 'border-zinc-700 text-zinc-700'}`}>
+                            {n === 8 ? '☕' : n}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             {/* Tabs */}
-            <div className="flex border-b border-zinc-800 p-2 gap-2 bg-zinc-900/30">
+            <div className="flex border-b border-zinc-800 p-2 gap-1 bg-zinc-900/30">
                 <button
                     onClick={() => setActiveTab("vouchers")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${activeTab === "vouchers" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "text-zinc-500 hover:bg-zinc-800"}`}
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === "vouchers" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "text-zinc-500 hover:bg-zinc-800"}`}
                 >
-                    <Gift className="w-4 h-4" /> Vouchers
+                    <Gift className="w-3.5 h-3.5" /> Vouchers
                 </button>
                 <button
                     onClick={() => setActiveTab("playlist")}
-                    className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${activeTab === "playlist" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "text-zinc-500 hover:bg-zinc-800"}`}
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === "playlist" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "text-zinc-500 hover:bg-zinc-800"}`}
                 >
-                    <Music className="w-4 h-4" /> Playlist
+                    <Music className="w-3.5 h-3.5" /> Playlist
+                </button>
+                <button
+                    onClick={() => setActiveTab("news")}
+                    className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${activeTab === "news" ? "bg-purple-500/20 text-purple-400 border border-purple-500/30" : "text-zinc-500 hover:bg-zinc-800"}`}
+                >
+                    <Megaphone className="w-3.5 h-3.5" /> Noutăți
                 </button>
             </div>
 
             {/* Content */}
-            <div className="flex-1 overflow-y-auto p-6">
+            <div className="flex-1 overflow-y-auto p-5">
                 {loading ? (
                     <div className="flex justify-center items-center h-40">
                         <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full" />
                     </div>
                 ) : activeTab === "vouchers" ? (
-                    <div className="space-y-8">
+                    <div className="space-y-7">
                         <div>
-                            <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                                 <Ticket className="w-4 h-4" /> Vouchere Active
                             </h3>
                             {activeVouchers.length === 0 ? (
@@ -94,19 +141,18 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
                             ) : (
                                 <div className="space-y-4">
                                     {activeVouchers.map(v => (
-                                        <div key={v.id} className="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border border-purple-500/30 p-5 rounded-2xl relative overflow-hidden group">
-                                            <div className="absolute top-0 right-0 p-3 bg-purple-500/20 rounded-bl-2xl text-[10px] font-bold text-purple-300">
+                                        <div key={v.id} className="bg-gradient-to-r from-purple-900/40 to-indigo-900/40 border border-purple-500/30 p-5 rounded-2xl relative overflow-hidden">
+                                            <div className="absolute top-0 right-0 p-2.5 bg-purple-500/20 rounded-bl-2xl text-[9px] font-bold text-purple-300">
                                                 Exp: {new Date(v.expires_at).toLocaleDateString()}
                                             </div>
-                                            <h4 className="text-xl font-black text-white mb-1 uppercase tracking-tighter">{v.type}</h4>
+                                            <h4 className="text-lg font-black text-white mb-1 uppercase tracking-tighter pr-20">{v.type}</h4>
                                             <p className="text-xs text-purple-200/70 mb-4 font-mono">CODE: {v.code}</p>
-
                                             <button
                                                 onClick={() => handleRedeem(v.id)}
                                                 disabled={redeeming === v.id}
-                                                className="w-full bg-purple-500 text-white font-black py-3 rounded-xl text-sm uppercase transition-transform active:scale-95 disabled:opacity-50"
+                                                className="w-full bg-purple-500 hover:bg-purple-400 text-white font-black py-2.5 rounded-xl text-sm uppercase transition-all active:scale-95 disabled:opacity-50"
                                             >
-                                                {redeeming === v.id ? "SE VALIDEAZĂ..." : "REVENDICĂ ACUM (Barista)"}
+                                                {redeeming === v.id ? "SE VALIDEAZĂ..." : "REVENDICĂ (la Barista)"}
                                             </button>
                                         </div>
                                     ))}
@@ -116,31 +162,31 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
 
                         {pastVouchers.length > 0 && (
                             <div>
-                                <h3 className="text-sm font-bold text-zinc-600 uppercase tracking-widest mb-4">Istoric</h3>
-                                <div className="space-y-3 opacity-60">
+                                <h3 className="text-xs font-bold text-zinc-600 uppercase tracking-widest mb-3">Istoric</h3>
+                                <div className="space-y-2 opacity-50">
                                     {pastVouchers.map(v => (
-                                        <div key={v.id} className="bg-zinc-900 border border-zinc-800 p-4 rounded-xl flex items-center justify-between">
+                                        <div key={v.id} className="bg-zinc-900 border border-zinc-800 p-3.5 rounded-xl flex items-center justify-between">
                                             <div>
-                                                <h4 className="text-sm font-bold text-zinc-400 line-through">{v.type}</h4>
-                                                <p className="text-[10px] text-zinc-600">{v.redeemed ? `Folosit la: ${new Date(v.redeemed_at).toLocaleDateString()}` : "Expirat"}</p>
+                                                <h4 className="text-xs font-bold text-zinc-400 line-through">{v.type}</h4>
+                                                <p className="text-[9px] text-zinc-600">{v.redeemed ? `Folosit: ${new Date(v.redeemed_at).toLocaleDateString()}` : "Expirat"}</p>
                                             </div>
-                                            {v.redeemed && <CheckCircle2 className="text-green-500/50 w-5 h-5" />}
+                                            {v.redeemed && <CheckCircle2 className="text-green-500/50 w-4 h-4" />}
                                         </div>
                                     ))}
                                 </div>
                             </div>
                         )}
                     </div>
-                ) : (
+                ) : activeTab === "playlist" ? (
                     <div className="space-y-4">
-                        <h3 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Colecția Ta</h3>
+                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4">Colecția Ta</h3>
                         {userData.playlists.length === 0 ? (
                             <p className="text-zinc-600 text-sm italic">Nu ai extras nicio piesă încă.</p>
                         ) : (
                             <div className="space-y-3">
                                 {userData.playlists.map((p, i) => (
                                     <div key={i} className="bg-zinc-900/80 border border-zinc-800 p-4 rounded-2xl hover:border-purple-500/30 transition-colors flex flex-col">
-                                        <div className="flex justify-between items-start mb-2">
+                                        <div className="flex justify-between items-start mb-1.5">
                                             <h4 className="font-bold text-white text-sm pr-2">{p.songs?.full_title}</h4>
                                             <span className="text-[9px] bg-zinc-800 text-zinc-400 px-2 py-1 rounded-sm uppercase shrink-0">
                                                 {new Date(p.listened_at).toLocaleDateString()}
@@ -171,6 +217,39 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
                                     </div>
                                 ))}
                             </div>
+                        )}
+                    </div>
+                ) : (
+                    /* NOUTATI TAB */
+                    <div className="space-y-4">
+                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                            <Megaphone className="w-4 h-4" /> Noutăți & Promoții
+                        </h3>
+                        {announcements.length === 0 ? (
+                            <p className="text-zinc-600 text-sm italic">Nicio noutate momentan. Revino curând!</p>
+                        ) : (
+                            <AnimatePresence>
+                                {announcements.map((a, i) => (
+                                    <motion.div
+                                        key={a.id}
+                                        initial={{ opacity: 0, y: 15 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: i * 0.07 }}
+                                        className={`bg-gradient-to-r ${CATEGORY_COLORS[a.category] || CATEGORY_COLORS.update} border p-4 rounded-2xl`}
+                                    >
+                                        <div className="flex items-start gap-3">
+                                            <span className="text-2xl shrink-0">{a.emoji}</span>
+                                            <div>
+                                                <h4 className="font-black text-white text-sm leading-tight mb-1">{a.title}</h4>
+                                                <p className="text-xs text-zinc-300/80 leading-relaxed">{a.body}</p>
+                                                <p className="text-[9px] text-zinc-600 mt-2 uppercase tracking-wide">
+                                                    {new Date(a.created_at).toLocaleDateString('ro-RO', { day: 'numeric', month: 'long' })}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </AnimatePresence>
                         )}
                     </div>
                 )}
