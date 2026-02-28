@@ -18,27 +18,42 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
 
     const today = now.toISOString().split('T')[0];
 
-    // 2. Verificare Scanare Unică - testerii pot scana oricât
+    // 2. Verificare Scanare per vizită validată - testerii pot scana oricât
     if (!isTester) {
-        const { data: existingScan } = await supabase
-            .from('scans')
-            .select('id')
-            .eq('user_id', userId)
-            .gte('scanned_at', `${today}T00:00:00Z`)
-            .single();
+        const today = now.toISOString().split('T')[0];
 
-        if (existingScan) {
+        // Câte cafele validate are azi?
+        const { count: visitCount } = await supabase
+            .from('coffee_purchases')
+            .select('id', { count: 'exact' })
+            .eq('user_id', userId)
+            .eq('barista_validated', true)
+            .gte('purchased_at', `${today}T00:00:00Z`);
+
+        if (!visitCount || visitCount === 0) {
+            return { error: "Trebuie să înregistrezi o cafea înainte de Drop the Beat!" };
+        }
+
+        // Câte drop-uri a folosit azi?
+        const { count: scanCount } = await supabase
+            .from('scans')
+            .select('id', { count: 'exact' })
+            .eq('user_id', userId)
+            .gte('scanned_at', `${today}T00:00:00Z`);
+
+        if ((scanCount || 0) >= visitCount) {
             const mockedFomo = [
                 "User-ul 'Nightrider' tocmai a extras un Flat White gratuit!",
-                "Mai sunt 3 surprize mari ascunse in Jukebox astăzi.",
+                "Mai sunt 3 surprize mari ascunse în Jukebox astăzi.",
                 "O piesă legendară tocmai a fost deblocată la masa 4."
             ];
             return {
-                error: "Ți-ai primit deja doza de muzică pe ziua de azi! Revino mâine.",
+                error: "Ai folosit Drop the Beat pentru această vizită! Revino cu o nouă cafea.",
                 fomo: mockedFomo[Math.floor(Math.random() * mockedFomo.length)]
             };
         }
     }
+
 
     // 3. Alegere Piesă
     const allCategories = ['RETRO_WAVE', 'CHILL_FLOW', 'GOOD_VIBE', 'BASS_MODE', 'SOUL_SELECT', 'MAIN_CHARACTER', 'PARTY_TIME'];
