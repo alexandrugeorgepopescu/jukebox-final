@@ -7,7 +7,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 export async function getUserData(userId: string) {
     noStore();
 
-    const [playlists, rewards, coffeeCount] = await Promise.all([
+    const [playlists, rewards, coffeePurchases] = await Promise.all([
         supabase
             .from('user_playlists')
             .select('listened_at, songs(*)')
@@ -20,14 +20,20 @@ export async function getUserData(userId: string) {
             .order('created_at', { ascending: false }),
         supabase
             .from('coffee_purchases')
-            .select('id', { count: 'exact' })
+            .select('quantity')
             .eq('user_id', userId)
+            .eq('barista_validated', true)
     ]);
+
+    // Suma cantitatilor validate - 4 cafele = 4 puncte, nu 1
+    const coffeeCount = coffeePurchases.data?.reduce(
+        (sum: number, row: { quantity: number }) => sum + (row.quantity || 1), 0
+    ) || 0;
 
     return {
         playlists: playlists.data || [],
         rewards: rewards.data || [],
-        coffeeCount: coffeeCount.count || 0
+        coffeeCount
     };
 }
 
