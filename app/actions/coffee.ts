@@ -17,16 +17,19 @@ export async function checkVisitStatus(userId: string) {
     const visitCount = todayPurchases?.length || 0;
     const isFirstVisit = visitCount === 0;
 
-    // Total cafele din ciclul de loialitate
-    const { count: totalCoffees } = await supabase
+    // Total cafele din ciclul de loialitate - suma cantitatilor, nu numarul de randuri
+    const { data: allPurchases } = await supabase
         .from('coffee_purchases')
-        .select('id', { count: 'exact' })
-        .eq('user_id', userId);
+        .select('quantity')
+        .eq('user_id', userId)
+        .eq('barista_validated', true);
+
+    const totalCoffees = allPurchases?.reduce((sum, row) => sum + (row.quantity || 1), 0) || 0;
 
     return {
         isFirstVisit,
         visitCount,
-        totalCoffees: totalCoffees || 0
+        totalCoffees
     };
 }
 
@@ -99,13 +102,14 @@ export async function registerCoffeePurchase(
     }
 
     // Verificam daca a ajuns la 8 cafele -> voucher gratuit
-    const { count: totalValidated } = await supabase
+    // Sumam cantitatea, nu numaram randuri
+    const { data: allValidated } = await supabase
         .from('coffee_purchases')
-        .select('quantity', { count: 'exact' })
+        .select('quantity')
         .eq('user_id', userId)
         .eq('barista_validated', true);
 
-    const totalCount = totalValidated || 0;
+    const totalCount = allValidated?.reduce((sum, row) => sum + (row.quantity || 1), 0) || 0;
 
     // La fiecare multiplu de 8 -> free coffee voucher
     const prevCycle = Math.floor((totalCount - quantity) / 8);
