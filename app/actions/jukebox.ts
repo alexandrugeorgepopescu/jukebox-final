@@ -55,8 +55,8 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
     }
 
 
-    // 3. Alegere Piesă
-    const allCategories = ['RETRO_WAVE', 'CHILL_FLOW', 'GOOD_VIBE', 'BASS_MODE', 'SOUL_SELECT', 'MAIN_CHARACTER', 'PARTY_TIME'];
+    // 3. Alegere Piesă - NUMAI din categoriile selectate de utilizator
+    const allCategories = ['RETRO_WAVE', 'CHILL_FLOW', 'GOOD_VIBE', 'BASS_MODE', 'SOUL_SELECT', 'MAIN_CHARACTER'];
     let { data: songs, error: fetchErr } = await supabase
         .from('songs')
         .select('*')
@@ -94,12 +94,12 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         return { error: "Eroare la adăugarea în playlist. Mesaj: " + plErr.message };
     }
 
-    // 6. Creare Voucher daca exista premiu
-    if (randomSong.destiny_prize) {
+    // 6. Creare Voucher - NUMAI cu 30% șanse (nu la fiecare drop)
+    let voucherAwarded = false;
+    if (randomSong.destiny_prize && Math.random() < 0.30) {
         const expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 30);
 
-        // 6. Creare Voucher (cu admin client - bypass RLS)
         const { error: rewardErr } = await supabaseAdmin.from('rewards').insert({
             user_id: userId,
             type: randomSong.destiny_prize,
@@ -109,6 +109,8 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         if (rewardErr) {
             console.error("Reward Error:", rewardErr);
             // Nu oprim fluxul principal dacă reward-ul pică, melodia tot apare
+        } else {
+            voucherAwarded = true;
         }
     }
 
@@ -117,7 +119,8 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
             id: randomSong.id,
             fullTitle: randomSong.full_title,
             funMessage: randomSong.fun_message,
-            destinyPrize: randomSong.destiny_prize,
+            // destinyPrize apare în UI NUMAI dacă voucherul a fost efectiv creat
+            destinyPrize: voucherAwarded ? randomSong.destiny_prize : null,
             cat: randomSong.category,
             yt: randomSong.yt_url,
             spotify: randomSong.spotify_url,
