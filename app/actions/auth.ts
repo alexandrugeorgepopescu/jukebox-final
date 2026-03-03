@@ -1,6 +1,7 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { MusicCategory } from "@/lib/types";
 
 export async function signUpUser(formData: FormData) {
@@ -14,9 +15,7 @@ export async function signUpUser(formData: FormData) {
     const tribe = formData.get("tribe") as string;
     const music_cats = formData.getAll("music_cats") as string[];
 
-    // 1. Creează cont in Supabase Auth (dacă e activat, dacă nu, facem doar insert in users)
-    // Pentru flexibilitate și viteză de prototipare, le punem direct in 'users' cu o parolă simplă (dacă vrea login custom)
-    // Dar schema ta nu are parolă in 'users'. Varianta ideală: Supabase Auth.
+    // 1. Creează cont in Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -28,21 +27,20 @@ export async function signUpUser(formData: FormData) {
 
     const userId = authData.user?.id;
 
-    // 2. Salvează profilul extins in tabelul 'users'
-    const { data: userData, error: userError } = await supabase.from("users").insert({
-        id: userId, // Folosește ID-ul de la auth
+    // 2. Salvează profilul in 'users' cu upsert + admin client
+    // upsert: dacă un trigger a creat deja rândul, îl actualizăm cu datele complete
+    // supabaseAdmin: ocolește RLS ca să funcționeze imediat după signup
+    const { error: userError } = await supabaseAdmin.from("users").upsert({
+        id: userId,
         email,
         name: `${firstname} ${lastname}`,
         birth_date: birthday,
         coffee_preference: coffee_type,
         music_preferences: music_cats,
-        // tribe_id / nickname etc ar merge in coloane custom, dar le omitem daca nu-s in schema.
-        // Or adding via JSONB metadata
-    }).select().single();
+    }, { onConflict: "id" });
 
     if (userError) {
-        // Fallback or ignore if table isn't updated yet. We return authData anyway.
-        console.error("User table insert error:", userError);
+        console.error("User upsert error:", userError);
     }
 
     return { user: authData.user };
