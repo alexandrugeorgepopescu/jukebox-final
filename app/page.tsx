@@ -57,8 +57,9 @@ export default function Home() {
 
             {/* Header */}
             <div className="text-center mb-8 z-10 pt-10">
-                <h1 className="text-[11.5vw] sm:text-7xl md:text-8xl lg:text-[7rem] font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)] whitespace-nowrap pr-4 pl-2 sm:px-0 text-center">
-                    REWIND JUKEBOX
+                <h1 className="text-[17vw] sm:text-[10vw] md:text-[7rem] font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)] leading-[0.85] w-full flex flex-col items-center justify-center px-4 sm:px-8">
+                    <span className="block text-center translate-x-[2%]">REWIND</span>
+                    <span className="block text-center">JUKEBOX</span>
                 </h1>
                 <p className="text-[10px] tracking-[0.4em] text-purple-400 uppercase font-bold animate-pulse">
                     COFFEE • MUSIC • VIBE
