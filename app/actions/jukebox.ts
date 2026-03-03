@@ -94,9 +94,9 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         return { error: "Eroare la adăugarea în playlist. Mesaj: " + plErr.message };
     }
 
-    // 6. Creare Voucher - NUMAI cu 30% șanse (nu la fiecare drop)
+    // 6. Creare Voucher - NUMAI cu 60% șanse (nu la fiecare drop)
     let voucherAwarded = false;
-    if (randomSong.destiny_prize && Math.random() < 0.30) {
+    if (randomSong.destiny_prize && Math.random() < 0.60) {
         const expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 30);
 
@@ -128,3 +128,4 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         }
     };
 }
+
