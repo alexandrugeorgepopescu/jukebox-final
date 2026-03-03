@@ -45,3 +45,5 @@ INSERT INTO songs (full_title, category, fun_message, destiny_prize, yt_url, spo
 ('Mirabela Dauer - Te-astept Să Vii', 'RETRO_WAVE', 'Confort și muzică bună!', 'Un loc pe cel mai comod fotoliu', 'https://www.youtube.com/watch?v=WZwZOS68vt4', 'https://open.spotify.com/track/1HZa7s0wqe4ae95rZdfSm7', 'https://music.apple.com/us/song/te-a%C8%99tept-s%C4%83-vii/1862041490', TRUE);
 
 -- Continua cu mesajul următor pentru restul categoriilor...
+
+
