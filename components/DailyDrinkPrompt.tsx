@@ -252,8 +252,8 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                         <p className="text-zinc-400 text-sm mb-4">Înmânează telefonul baristei să introducă codul secret.</p>
 
                         <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-3 mb-6 inline-block w-full text-center">
-                            <span className="text-purple-300 text-[10px] font-bold uppercase tracking-widest block mb-1">Status Client</span>
-                            <span className="text-white font-black text-lg">{totalCoffees} cafele înregistrate</span>
+                            <span className="text-amber-400 text-[10px] font-bold uppercase tracking-widest block mb-1">DE VALIDAT ACUM</span>
+                            <span className="text-white font-black text-2xl">{quantity} {quantity === 1 ? 'CAFEA' : 'CAFELE'}</span>
                         </div>
 
                         <div className="flex justify-center gap-2 mb-6">
