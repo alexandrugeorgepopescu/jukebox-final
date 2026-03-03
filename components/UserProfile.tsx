@@ -12,9 +12,12 @@ interface UserProfileProps {
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
-    promo: "from-purple-900/60 to-indigo-900/60 border-purple-500/40",
+    welcome: "from-sky-900/60 to-blue-900/60 border-blue-500/40",
+    loyalty: "from-purple-900/60 to-indigo-900/60 border-purple-500/40",
     event: "from-amber-900/60 to-orange-900/60 border-amber-500/40",
     menu: "from-emerald-900/60 to-teal-900/60 border-emerald-500/40",
+    bday: "from-purple-900/60 to-fuchsia-900/60 border-pink-500/40",
+    promo: "from-purple-900/60 to-indigo-900/60 border-purple-500/40",
     update: "from-blue-900/60 to-cyan-900/60 border-blue-500/40",
 };
 

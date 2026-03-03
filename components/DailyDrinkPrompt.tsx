@@ -42,6 +42,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
     const [gpsStatus, setGpsStatus] = useState<"idle" | "checking" | "ok" | "fail">("idle");
     const [isFirstSingle, setIsFirstSingle] = useState(false);
     const [visitCount, setVisitCount] = useState(0);
+    const [totalCoffees, setTotalCoffees] = useState(0);
     const [cafeLocations, setCafeLocations] = useState<Array<{ name: string, lat: number, lng: number }>>([]);
     const [config, setConfig] = useState<Record<string, string>>({});
 
@@ -52,6 +53,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                 getConfig()
             ]);
             setVisitCount(status.visitCount);
+            setTotalCoffees(status.totalCoffees);
             setConfig(cfg.config);
             setCafeLocations(cfg.cafeLocations);
         };
@@ -247,7 +249,12 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                             <Lock className="w-10 h-10 text-purple-400" />
                         </div>
                         <h2 className="text-2xl font-black text-white mb-2">PIN Barista</h2>
-                        <p className="text-zinc-400 text-sm mb-6">Înmânează telefonul baristei să introducă codul secret.</p>
+                        <p className="text-zinc-400 text-sm mb-4">Înmânează telefonul baristei să introducă codul secret.</p>
+
+                        <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-3 mb-6 inline-block w-full text-center">
+                            <span className="text-purple-300 text-[10px] font-bold uppercase tracking-widest block mb-1">Status Client</span>
+                            <span className="text-white font-black text-lg">{totalCoffees} cafele înregistrate</span>
+                        </div>
 
                         <div className="flex justify-center gap-2 mb-6">
                             {[0, 1, 2, 3, 4, 5].map(i => (
