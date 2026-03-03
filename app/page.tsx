@@ -55,23 +55,23 @@ export default function Home() {
             {/* Background Ambience */}
             <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-black to-black -z-10" />
 
-            {/* Header */}
-            <div className="text-center mb-8 z-10 pt-10">
-                <h1 className="text-[16vw] sm:text-[10vw] md:text-[7rem] font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)] leading-[0.85] text-center w-full px-2">
-                    <span className="inline-block ml-[0.3em]">REWIND</span><br />JUKEBOX
-                </h1>
-                <p className="text-[10px] tracking-[0.4em] text-purple-400 uppercase font-bold animate-pulse">
-                    COFFEE • MUSIC • VIBE
-                </p>
-                {user && (
-                    <button
-                        onClick={() => setShowProfile(true)}
-                        className="mt-6 uppercase text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-zinc-900/50 px-6 py-2 rounded-full transition-all hover:border-purple-500/50"
-                    >
-                        Accesează Portofel / {user.name}
-                    </button>
-                )}
-            </div>
+         {/* Header */}
+<div className="text-center mb-8 z-10 pt-10 w-full overflow-visible">
+    <h1 className="text-[16vw] sm:text-[10vw] md:text-[7rem] font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-600 mb-2 drop-shadow-[0_0_15px_rgba(147,51,234,0.5)] leading-none text-center w-full px-4">
+        REWIND<br />JUKEBOX
+    </h1>
+    <p className="text-[10px] tracking-[0.4em] text-purple-400 uppercase font-bold animate-pulse">
+        COFFEE • MUSIC • VIBE
+    </p>
+    {user && (
+        <button
+            onClick={() => setShowProfile(true)}
+            className="mt-6 uppercase text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-zinc-900/50 px-6 py-2 rounded-full transition-all hover:border-purple-500/50"
+        >
+            Accesează Portofel / {user.name}
+        </button>
+    )}
+</div>
 
             {/* Content Sequencing */}
             <div className="w-full max-w-4xl z-10 flex flex-col items-center justify-center grow pb-20">
@@ -101,3 +101,4 @@ export default function Home() {
         </main>
     );
 }
+
