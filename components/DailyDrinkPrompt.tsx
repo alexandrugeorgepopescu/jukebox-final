@@ -233,7 +233,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                 {/* ─── STEP: DRINK SELECTION ─── */}
                 {step === "drink" && (
                     <motion.div key="drink" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-                        className="bg-zinc-900 border border-purple-500/30 rounded-3xl shadow-[0_0_50px_rgba(147,51,234,0.15)] relative overflow-hidden">
+                        className="bg-zinc-900 border border-purple-500/30 rounded-3xl shadow-[0_0_50px_rgba(147,51,234,0.15)] relative">
 
                         <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 blur-[50px] rounded-full" />
 
@@ -272,7 +272,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                                             initial={{ opacity: 0, y: -4 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: -4 }}
-                                            className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden z-50 shadow-2xl max-h-64 overflow-y-auto"
+                                            className="absolute top-full left-0 right-0 mt-1 bg-zinc-900 border border-white/10 rounded-xl overflow-hidden z-50 shadow-2xl max-h-[28rem] overflow-y-auto"
                                         >
                                             {Object.entries(CATEGORY_LABELS).map(([cat, catLabel]) => {
                                                 const catDrinks = filteredDrinks.filter(d => d.category === cat);
@@ -324,14 +324,14 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                                                             key={drink.id}
                                                             onClick={() => addToBasket(drink.id)}
                                                             className={`relative flex flex-col items-start p-3 rounded-xl border transition-all text-left overflow-hidden group ${inBasket
-                                                                    ? "bg-purple-500/15 border-purple-500/60"
-                                                                    : "bg-black/40 border-white/5 hover:bg-purple-500/8 hover:border-purple-500/30"
+                                                                ? "bg-purple-500/15 border-purple-500/60"
+                                                                : "bg-black/40 border-white/5 hover:bg-purple-500/8 hover:border-purple-500/30"
                                                                 }`}
                                                         >
                                                             {/* Badge */}
                                                             <span className="text-[7px] text-purple-400/80 uppercase tracking-wider font-bold mb-1.5 leading-none">{drink.badge}</span>
                                                             <span className="font-semibold text-white text-[11px] leading-tight mb-0.5">{drink.name}</span>
-                                                            <span className="text-[9px] text-zinc-600">{drink.ml} · {drink.price} lei</span>
+                                                            <span className="text-[9px] text-zinc-600">{drink.ml}</span>
                                                             {inBasket && (
                                                                 <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-purple-500 flex items-center justify-center">
                                                                     <span className="text-[8px] text-white font-black">{inBasket.qty}</span>
