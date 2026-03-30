@@ -6,7 +6,7 @@ import { Song } from "@/lib/types";
 
 export async function performDrop(userId: string, musicPrefs: string[], isTester?: boolean) {
     const now = new Date();
-    const currentHour = now.getUTCHours() + 2; // Romanian time (EET)
+    const currentHour = now.getUTCHours() + 3; // Romanian time (EEST - ora de vară)
 
     // 1. Verificare Interval Orar (07:00 - 21:00) - testers ocolesc
     if (!isTester && (currentHour < 7 || currentHour >= 21)) {
