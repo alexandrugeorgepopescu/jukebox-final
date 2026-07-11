@@ -178,9 +178,25 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                 }));
                 if (distances.length === 0) {
                     distances.push(
-                        { name: "Rewind Cafe Pacurari", lat: 47.174434, lng: 27.537209, dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.174434, 27.537209) },
-                        { name: "Rewind Cafe Miroslava", lat: 47.145912, lng: 27.528504, dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.145912, 27.528504) }
-                    );
+    { 
+        name: "Rewind Cafe Pacurari", 
+        lat: 47.174434, 
+        lng: 27.537209, 
+        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.174434, 27.537209) 
+    },
+    { 
+        name: "Rewind Cafe Miroslava", 
+        lat: 47.145912, 
+        lng: 27.528504, 
+        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.145912, 27.528504) 
+    },
+    { 
+        name: "Rewind Cafe Alexandru", 
+        lat: 47.16102361939559, 
+        lng: 27.575434156561894, 
+        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.16102361939559, 27.575434156561894) 
+    }
+);
                 }
                 const nearest = distances.reduce((a, b) => a.dist < b.dist ? a : b);
                 if (nearest.dist <= radius) {
