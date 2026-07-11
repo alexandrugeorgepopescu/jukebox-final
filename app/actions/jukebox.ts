@@ -96,7 +96,7 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
 
     // 6. Creare Voucher - NUMAI cu 60% șanse (nu la fiecare drop)
     let voucherAwarded = false;
-    if (randomSong.destiny_prize && Math.random() < 0.60) {
+    if (randomSong.destiny_prize && Math.random() < 0.50) {
         const expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + 30);
 
