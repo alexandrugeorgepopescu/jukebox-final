@@ -5,7 +5,7 @@ import { User, MusicCategory } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { Check, Flame, Star, Zap, Ghost } from "lucide-react";
-import { signUpUser, loginUser } from "@/app/actions/auth";
+import { signUpUser, loginUser, resetPassword } from "@/app/actions/auth";
 
 const MUSIC_CATEGORIES: { id: MusicCategory; label: string; desc: string; vibe: string }[] = [
     { id: "RETRO_WAVE", label: "RETRO WAVE", desc: "Nostalgie care te ridică", vibe: "Old memories." },
@@ -32,6 +32,22 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
     const [errorMsg, setErrorMsg] = useState("");
     const [tempMusicPrefs, setTempMusicPrefs] = useState<string[]>([]);
     const [selectedTribe, setSelectedTribe] = useState("retro");
+    const [forgotPassword, setForgotPassword] = useState(false);
+    const [forgotEmail, setForgotEmail] = useState("");
+    const [forgotSent, setForgotSent] = useState(false);
+
+    const handleForgotPassword = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        setErrorMsg("");
+        const res = await resetPassword(forgotEmail);
+        setLoading(false);
+        if (res?.error) {
+            setErrorMsg(res.error);
+        } else {
+            setForgotSent(true);
+        }
+    };
 
     const toggleMusic = (id: string) => {
         if (tempMusicPrefs.includes(id)) {
@@ -95,6 +111,86 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
             setLoading(false);
         }
     };
+
+    // ─── FORGOT PASSWORD VIEW ───────────────────────────────────────────────
+    if (forgotPassword) {
+        return (
+            <div className="w-full max-w-xl mx-auto p-2">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    className="bg-zinc-900/80 backdrop-blur-xl p-8 rounded-[2rem] border border-white/5 shadow-2xl relative overflow-hidden"
+                >
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-purple-500/20 blur-[100px] -z-10 rounded-full" />
+
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl font-black text-white tracking-tight">AI UITAT PAROLA?</h2>
+                        <p className="text-purple-300/60 mt-2 text-sm">
+                            Introdu email-ul și îți trimitem un link de resetare.
+                        </p>
+                    </div>
+
+                    {errorMsg && (
+                        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">
+                            {errorMsg}
+                        </div>
+                    )}
+
+                    {forgotSent ? (
+                        <div className="text-center space-y-4">
+                            <div className="w-16 h-16 rounded-full bg-green-500/20 border border-green-500/30 flex items-center justify-center mx-auto">
+                                <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p className="text-white font-bold">Email trimis!</p>
+                            <p className="text-zinc-400 text-sm">
+                                Verifică inbox-ul (și spam) pentru link-ul de resetare.<br />
+                                Link-ul expiră în <span className="text-purple-400">60 de minute</span>.
+                            </p>
+                            <button
+                                onClick={() => { setForgotPassword(false); setForgotSent(false); setForgotEmail(""); setErrorMsg(""); }}
+                                className="mt-4 text-xs text-zinc-500 hover:text-white transition-colors underline underline-offset-4"
+                            >
+                                Înapoi la login
+                            </button>
+                        </div>
+                    ) : (
+                        <form onSubmit={handleForgotPassword} className="space-y-5">
+                            <div>
+                                <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Email-ul contului tău</label>
+                                <input
+                                    type="email"
+                                    required
+                                    value={forgotEmail}
+                                    onChange={e => setForgotEmail(e.target.value)}
+                                    placeholder="ex: tu@email.com"
+                                    className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-1"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black py-4 rounded-xl hover:opacity-90 transition transform active:scale-95 shadow-[0_0_20px_rgba(147,51,234,0.3)] disabled:opacity-50"
+                            >
+                                {loading ? "SE TRIMITE..." : "TRIMITE LINK DE RESETARE"}
+                            </button>
+                        </form>
+                    )}
+
+                    {!forgotSent && (
+                        <div className="mt-6 text-center">
+                            <button
+                                onClick={() => { setForgotPassword(false); setErrorMsg(""); }}
+                                className="text-xs text-zinc-500 hover:text-white transition-colors underline decoration-zinc-700 underline-offset-4"
+                            >
+                                Înapoi la login
+                            </button>
+                        </div>
+                    )}
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className="w-full max-w-xl mx-auto p-2">
@@ -216,8 +312,19 @@ export default function AuthForm({ onComplete }: AuthFormProps) {
                             <input type="email" name="email" required className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-1" />
                         </div>
                         <div>
-                            <label className="text-[10px] uppercase tracking-widest text-zinc-500 ml-2">Parolă</label>
-                            <input type="password" name="password" required className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors mt-1" />
+                            <div className="flex justify-between items-center ml-2 mb-1">
+                                <label className="text-[10px] uppercase tracking-widest text-zinc-500">Parolă</label>
+                                {isLogin && (
+                                    <button
+                                        type="button"
+                                        onClick={() => { setForgotPassword(true); setErrorMsg(""); }}
+                                        className="text-[10px] text-purple-400/70 hover:text-purple-300 transition-colors uppercase tracking-widest"
+                                    >
+                                        Ai uitat parola?
+                                    </button>
+                                )}
+                            </div>
+                            <input type="password" name="password" required className="w-full bg-black/50 p-4 rounded-xl border border-white/10 text-white outline-none focus:border-purple-500 transition-colors" />
                         </div>
                     </div>
 

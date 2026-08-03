@@ -46,6 +46,23 @@ export async function signUpUser(formData: FormData) {
     return { user: authData.user };
 }
 
+export async function resetPassword(email: string) {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${siteUrl}/reset-password`,
+    });
+
+    if (error) return { error: error.message };
+    return { success: true };
+}
+
+export async function updatePassword(newPassword: string) {
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) return { error: error.message };
+    return { success: true };
+}
+
 export async function loginUser(formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
