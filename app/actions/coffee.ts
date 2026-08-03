@@ -1,7 +1,6 @@
 "use server";
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
-import { supabase } from "@/lib/supabase";
 
 export async function checkVisitStatus(userId: string) {
     const today = new Date().toISOString().split('T')[0];
@@ -17,7 +16,7 @@ export async function checkVisitStatus(userId: string) {
     const visitCount = todayPurchases?.length || 0;
     const isFirstVisit = visitCount === 0;
 
-    // Total cafele din ciclul de loialitate - suma cantitatilor, nu numarul de randuri
+    // Total cafele din ciclul de loialitate - suma cantităților
     const { data: allPurchases } = await supabaseAdmin
         .from('coffee_purchases')
         .select('quantity')
@@ -33,6 +32,23 @@ export async function checkVisitStatus(userId: string) {
     };
 }
 
+export async function checkGPSLocation(lat: number, lng: number) {
+    const { data, error } = await supabaseAdmin.rpc("is_within_radius", {
+        p_lat: lat,
+        p_lng: lng
+    });
+
+    if (error || !data || data.length === 0) {
+        return { isInside: false, locationName: "Locație Necunoscută", distance: 9999 };
+    }
+
+    return {
+        isInside: data[0].is_inside,
+        locationName: data[0].location_name,
+        distance: Math.round(data[0].distance_meters)
+    };
+}
+
 export async function getConfig() {
     const { data } = await supabaseAdmin
         .from('config')
@@ -41,7 +57,6 @@ export async function getConfig() {
     const config: Record<string, string> = {};
     data?.forEach(row => { config[row.key] = row.value; });
 
-    // Parse cafe_locations as JSON if present
     let cafeLocations: Array<{ name: string, lat: number, lng: number }> = [];
     if (config.cafe_locations) {
         try { cafeLocations = JSON.parse(config.cafe_locations); } catch { }
@@ -55,26 +70,14 @@ export async function registerCoffeePurchase(
     coffeeType: string,
     quantity: number,
     baristaPinProvided?: string,
-    isFirstSingleCoffee?: boolean
+    isFirstSingleCoffee?: boolean,
+    locationName?: string
 ) {
-    const today = new Date().toISOString().split('T')[0];
-
-    // Numărul vizitei de azi
-    const { data: todayPurchases } = await supabaseAdmin
-        .from('coffee_purchases')
-        .select('id')
-        .eq('user_id', userId)
-        .gte('purchased_at', `${today}T00:00:00Z`);
-
-    const visitNumber = (todayPurchases?.length || 0) + 1;
-
     let baristValidated = false;
 
     if (isFirstSingleCoffee) {
-        // Prima vizita, 1 cafea -> validat automat
         baristValidated = true;
     } else {
-        // Verificam PIN-ul baristei
         const { data: pinConfig } = await supabaseAdmin
             .from('config')
             .select('value')
@@ -87,44 +90,26 @@ export async function registerCoffeePurchase(
         baristValidated = true;
     }
 
-    // Inseram achizitia
-    const { error } = await supabaseAdmin.from('coffee_purchases').insert({
-        user_id: userId,
-        coffee_type: coffeeType,
-        quantity: quantity,
-        barista_validated: baristValidated,
-        visit_number: visitNumber
+    // Apelare RPC atomic register_coffee_purchase (tranzacție unică)
+    const { data: rpcRes, error: rpcErr } = await supabaseAdmin.rpc("register_coffee_purchase", {
+        p_user_id: userId,
+        p_coffee_type: coffeeType,
+        p_quantity: quantity,
+        p_barista_validated: baristValidated,
+        p_location: locationName || null
     });
 
-    if (error) {
-        console.error("Coffee purchase error:", error);
-        return { error: "Eroare la salvarea cafelei: " + error.message };
+    if (rpcErr) {
+        console.error("Coffee purchase RPC error:", rpcErr);
+        return { error: "Eroare la salvarea cafelei: " + rpcErr.message };
     }
 
-    // Verificam daca a ajuns la 8 cafele -> voucher gratuit
-    // Sumam cantitatea, nu numaram randuri
-    const { data: allValidated } = await supabaseAdmin
-        .from('coffee_purchases')
-        .select('quantity')
-        .eq('user_id', userId)
-        .eq('barista_validated', true);
-
-    const totalCount = allValidated?.reduce((sum, row) => sum + (row.quantity || 1), 0) || 0;
-
-    // La fiecare multiplu de 8 -> free coffee voucher
-    const prevCycle = Math.floor((totalCount - quantity) / 8);
-    const newCycle = Math.floor(totalCount / 8);
-
-    if (newCycle > prevCycle) {
-        const expire = new Date();
-        expire.setDate(expire.getDate() + 30);
-        await supabaseAdmin.from('rewards').insert({
-            user_id: userId,
-            type: '☕ CAFEA GRATUITA - Loyalty Reward',
-            code: `LOYA-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
-            expires_at: expire.toISOString()
-        });
-    }
-
-    return { success: true, canDrop: true, visitNumber };
+    return { 
+        success: true, 
+        canDrop: true, 
+        visitNumber: rpcRes.visit_number,
+        midRewardAwarded: rpcRes.mid_reward_awarded,
+        fullRewardAwarded: rpcRes.full_reward_awarded,
+        newTotal: rpcRes.new_total
+    };
 }

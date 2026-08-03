@@ -4,6 +4,17 @@ import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { Song } from "@/lib/types";
 
+export async function preloadSongs(musicPrefs: string[]) {
+    const allCategories = ['RETRO_WAVE', 'CHILL_FLOW', 'GOOD_VIBE', 'BASS_MODE', 'SOUL_SELECT', 'MAIN_CHARACTER'];
+    const { data: songs } = await supabaseAdmin
+        .from('songs')
+        .select('*')
+        .filter('active', 'eq', true)
+        .in('category', musicPrefs && musicPrefs.length > 0 ? musicPrefs : allCategories);
+
+    return songs || [];
+}
+
 export async function performDrop(userId: string, musicPrefs: string[], isTester?: boolean) {
     const now = new Date();
     const currentHour = now.getUTCHours() + 3; // Romanian time (EEST - ora de vară)

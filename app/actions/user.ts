@@ -1,6 +1,5 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -25,7 +24,6 @@ export async function getUserData(userId: string) {
             .eq('barista_validated', true)
     ]);
 
-    // Suma cantitatilor validate - 4 cafele = 4 puncte, nu 1
     const coffeeCount = coffeePurchases.data?.reduce(
         (sum: number, row: { quantity: number }) => sum + (row.quantity || 1), 0
     ) || 0;
@@ -56,7 +54,6 @@ export async function checkBirthdayReward(userId: string, birthDate?: string) {
     const isBirthday = today.getMonth() === bday.getMonth() && today.getDate() === bday.getDate();
     if (!isBirthday) return;
 
-    // Verifica daca nu a primit deja cadoul de ziua azi
     const thisYear = today.getFullYear();
     const { data: existing } = await supabaseAdmin
         .from('rewards')
@@ -65,9 +62,8 @@ export async function checkBirthdayReward(userId: string, birthDate?: string) {
         .eq('type', 'BIRTHDAY: Cafea + Prajitura Gratuita 🎂')
         .gte('created_at', `${thisYear}-01-01T00:00:00Z`);
 
-    if (existing && existing.length > 0) return; // deja primit
+    if (existing && existing.length > 0) return;
 
-    // Creeaza cadoul
     const expire = new Date();
     expire.setDate(expire.getDate() + 7);
     await supabaseAdmin.from('rewards').insert({
@@ -86,6 +82,52 @@ export async function redeemReward(rewardId: string) {
             redeemed_at: new Date().toISOString()
         })
         .eq('id', rewardId);
+
+    if (error) return { error: error.message };
+    return { success: true };
+}
+
+// ─── GDPR OPT-OUT HMAC SIGNATURE VERIFICATION ────────────────────────────────
+async function verifyHmacToken(token: string): Promise<string | null> {
+    if (!token || !token.includes(".")) return null;
+    const [userId, hmacHex] = token.split(".");
+    if (!userId || !hmacHex) return null;
+
+    const secret = process.env.UNSUBSCRIBE_SECRET;
+    if (!secret) {
+        console.error("CRITICAL: UNSUBSCRIBE_SECRET environment variable is missing!");
+        return null;
+    }
+    const encoder = new TextEncoder();
+    const keyData = encoder.encode(secret);
+    const key = await crypto.subtle.importKey(
+        "raw",
+        keyData,
+        { name: "HMAC", hash: "SHA-256" },
+        false,
+        ["sign"]
+    );
+    const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(userId));
+    const expectedHex = Array.from(new Uint8Array(signature))
+        .map(b => b.toString(16).padStart(2, "0"))
+        .join("");
+
+    if (expectedHex === hmacHex) {
+        return userId;
+    }
+    return null;
+}
+
+export async function optOutEmail(token: string) {
+    const userId = await verifyHmacToken(token);
+    if (!userId) {
+        return { error: "Token de dezabonare invalid sau modificat. Solicitarea a fost respinsă din motive de securitate." };
+    }
+
+    const { error } = await supabaseAdmin
+        .from('users')
+        .update({ email_opt_out: true })
+        .eq('id', userId);
 
     if (error) return { error: error.message };
     return { success: true };

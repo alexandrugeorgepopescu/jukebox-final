@@ -98,8 +98,12 @@ export default function UserProfile({ user, onClose }: UserProfileProps) {
                 </div>
                 <div className="flex justify-between mt-1">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
-                        <div key={n} className={`w-4 h-4 rounded-full border text-[8px] flex items-center justify-center font-black ${n <= coffeeCycle ? 'bg-amber-400 border-amber-400 text-black' : 'border-zinc-700 text-zinc-700'}`}>
-                            {n === 8 ? '☕' : n}
+                        <div key={n} className={`w-4 h-4 rounded-full border text-[8px] flex items-center justify-center font-black ${
+                            n <= coffeeCycle 
+                                ? n === 4 ? 'bg-purple-500 border-purple-400 text-white' : n === 8 ? 'bg-amber-400 border-amber-400 text-black' : 'bg-amber-400 border-amber-400 text-black'
+                                : n === 4 ? 'border-yellow-500/60 text-yellow-500 bg-yellow-500/10' : 'border-zinc-700 text-zinc-700'
+                        }`}>
+                            {n === 4 ? '⚡' : n === 8 ? '☕' : n}
                         </div>
                     ))}
                 </div>

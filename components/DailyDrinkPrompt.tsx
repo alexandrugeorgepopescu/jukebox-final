@@ -261,6 +261,65 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
 
                         {/* Header */}
                         <div className="p-6 pb-0">
+                            {/* ─── 7 DIN 8 IN-APP BANNER NOTIFICATION ─── */}
+                            {(totalCoffees % 8 === 7) && (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="mb-4 p-3 rounded-2xl bg-gradient-to-r from-purple-900/60 to-indigo-900/60 border border-purple-500/50 flex items-center justify-between text-left shadow-lg"
+                                >
+                                    <div className="flex items-center gap-2.5">
+                                        <div className="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-400/30 flex items-center justify-center shrink-0">
+                                            <span className="text-sm">🔥</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-white text-xs font-bold leading-tight">O singură cafea te desparte de cea gratuită!</p>
+                                            <p className="text-purple-300/70 text-[10px]">Savurează cafeaua de azi și deblochează recompensa.</p>
+                                        </div>
+                                    </div>
+                                    <span className="text-xs font-black text-amber-400 bg-black/40 px-2.5 py-1 rounded-full border border-amber-500/30">7/8</span>
+                                </motion.div>
+                            )}
+
+                            {/* ─── 1->8 ANIMATED PROGRESS BAR ─── */}
+                            <div className="mb-5 bg-black/40 p-4 rounded-2xl border border-white/5">
+                                <div className="flex justify-between items-center mb-2">
+                                    <span className="text-xs text-purple-300 font-bold uppercase tracking-wider">
+                                        Cafeaua {totalCoffees % 8} din 8 până la cea gratuită
+                                    </span>
+                                    <span className="text-[10px] text-amber-400 font-bold">
+                                        {(totalCoffees % 8) >= 4 ? "⚡ Sirop Gratuit Deblocat!" : "🎁 Sirop la 4/8"}
+                                    </span>
+                                </div>
+                                <div className="h-2.5 bg-zinc-800 rounded-full overflow-hidden relative">
+                                    <motion.div
+                                        className="h-full bg-gradient-to-r from-purple-500 via-indigo-500 to-amber-400 rounded-full"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${((totalCoffees % 8) / 8) * 100}%` }}
+                                        transition={{ duration: 0.8, ease: "easeOut" }}
+                                    />
+                                    {/* Indicator 4/8 Micro Reward */}
+                                    <div className="absolute left-[50%] top-0 bottom-0 w-0.5 bg-yellow-400/60 z-10" />
+                                </div>
+                                <div className="flex justify-between mt-2 px-0.5">
+                                    {[1, 2, 3, 4, 5, 6, 7, 8].map(n => (
+                                        <div
+                                            key={n}
+                                            className={`w-5 h-5 rounded-full text-[9px] flex items-center justify-center font-black transition-all ${
+                                                n <= (totalCoffees % 8)
+                                                    ? n === 4 ? "bg-purple-500 text-white border border-purple-300"
+                                                    : n === 8 ? "bg-amber-400 text-black border border-yellow-300"
+                                                    : "bg-purple-500/40 text-purple-200 border border-purple-500/50"
+                                                    : n === 4 ? "border border-yellow-500/50 text-yellow-500 bg-yellow-500/10"
+                                                    : "border border-zinc-700 text-zinc-600 bg-zinc-900"
+                                            }`}
+                                        >
+                                            {n === 4 ? "⚡" : n === 8 ? "☕" : n}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
                             <h2 className="text-2xl font-black text-white mb-1 text-center tracking-tight">
                                 {visitCount > 0 ? `Bun revenit, ${user.name.split(' ')[0]}.` : "Ce bei astăzi?"}
                             </h2>

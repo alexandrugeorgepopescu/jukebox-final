@@ -1,0 +1,27 @@
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# Environment Variables (Security)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+.env*
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Vercel CLI
+.vercel/

@@ -8,6 +8,7 @@ import UserProfile from "@/components/UserProfile";
 import { User } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { checkBirthdayReward } from "@/app/actions/user";
+import { preloadSongs } from "@/app/actions/jukebox";
 
 export default function Home() {
     const [user, setUser] = useState<User | null>(null);
@@ -41,6 +42,20 @@ export default function Home() {
         };
         checkSession();
     }, []);
+
+    // A4: Song Catalog Cache (1 oră)
+    useEffect(() => {
+        if (user?.musicPreference) {
+            const cacheKey = `rewind_songs_${user.id}`;
+            const cached = localStorage.getItem(cacheKey);
+            const now = Date.now();
+            if (!cached || (now - (JSON.parse(cached).timestamp || 0) > 3600000)) {
+                preloadSongs(user.musicPreference).then(songs => {
+                    localStorage.setItem(cacheKey, JSON.stringify({ timestamp: now, songs }));
+                });
+            }
+        }
+    }, [user]);
 
     const handleAuthComplete = (u: User) => {
         setUser(u);
