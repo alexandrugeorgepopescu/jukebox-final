@@ -1,9 +1,9 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function logDailyDrink(userId: string, drink: string) {
-    const { error } = await supabase.from("coffee_purchases").insert({
+    const { error } = await supabaseAdmin.from("coffee_purchases").insert({
         user_id: userId,
         coffee_type: drink,
     });

@@ -77,7 +77,7 @@ export async function loginUser(formData: FormData) {
     }
 
     // Fetch user details
-    const { data: userData } = await supabase.from("users").select("*").eq("id", data.user?.id).single();
+    const { data: userData } = await supabaseAdmin.from("users").select("*").eq("id", data.user?.id).single();
 
     return { user: data.user, profile: userData };
 }

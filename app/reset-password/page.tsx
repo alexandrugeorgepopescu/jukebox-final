@@ -27,7 +27,20 @@ function ResetPasswordForm() {
                 setSessionReady(true);
             }
         });
-    }, []);
+
+        // Safety timeout de 5 secunde în caz că Supabase nu declanșează evenimentul
+        const timer = setTimeout(() => {
+            if (!sessionReady) {
+                setStatus("error");
+                setMessage("Link-ul de resetare a expirat sau este invalid. Te rugăm să soliciți un link nou din pagina de login.");
+            }
+        }, 5000);
+
+        return () => {
+            subscription.unsubscribe();
+            clearTimeout(timer);
+        };
+    }, [sessionReady]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -60,6 +73,23 @@ function ResetPasswordForm() {
         }
     };
 
+    if (status === "error") {
+        return (
+            <div className="text-center space-y-5">
+                <div className="flex items-center justify-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                    <span className="text-left">{message}</span>
+                </div>
+                <button
+                    onClick={() => router.push("/")}
+                    className="mt-4 uppercase text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 bg-zinc-900/50 px-6 py-2 rounded-full transition-all hover:border-purple-500/50"
+                >
+                    Înapoi la pornire
+                </button>
+            </div>
+        );
+    }
+
     if (!sessionReady) {
         return (
             <div className="text-center space-y-4">
@@ -75,12 +105,6 @@ function ResetPasswordForm() {
             {status === "success" && (
                 <div className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
                     <CheckCircle className="w-5 h-5 shrink-0" />
-                    {message}
-                </div>
-            )}
-            {status === "error" && (
-                <div className="flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                    <AlertCircle className="w-5 h-5 shrink-0" />
                     {message}
                 </div>
             )}

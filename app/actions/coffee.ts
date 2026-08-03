@@ -7,7 +7,7 @@ export async function checkVisitStatus(userId: string) {
     const today = new Date().toISOString().split('T')[0];
 
     // Câte vizite validate are azi?
-    const { data: todayPurchases } = await supabase
+    const { data: todayPurchases } = await supabaseAdmin
         .from('coffee_purchases')
         .select('id, quantity, barista_validated, visit_number')
         .eq('user_id', userId)
@@ -18,7 +18,7 @@ export async function checkVisitStatus(userId: string) {
     const isFirstVisit = visitCount === 0;
 
     // Total cafele din ciclul de loialitate - suma cantitatilor, nu numarul de randuri
-    const { data: allPurchases } = await supabase
+    const { data: allPurchases } = await supabaseAdmin
         .from('coffee_purchases')
         .select('quantity')
         .eq('user_id', userId)
@@ -34,7 +34,7 @@ export async function checkVisitStatus(userId: string) {
 }
 
 export async function getConfig() {
-    const { data } = await supabase
+    const { data } = await supabaseAdmin
         .from('config')
         .select('key, value');
 
@@ -60,7 +60,7 @@ export async function registerCoffeePurchase(
     const today = new Date().toISOString().split('T')[0];
 
     // Numărul vizitei de azi
-    const { data: todayPurchases } = await supabase
+    const { data: todayPurchases } = await supabaseAdmin
         .from('coffee_purchases')
         .select('id')
         .eq('user_id', userId)
@@ -75,7 +75,7 @@ export async function registerCoffeePurchase(
         baristValidated = true;
     } else {
         // Verificam PIN-ul baristei
-        const { data: pinConfig } = await supabase
+        const { data: pinConfig } = await supabaseAdmin
             .from('config')
             .select('value')
             .eq('key', 'barista_pin')
@@ -103,7 +103,7 @@ export async function registerCoffeePurchase(
 
     // Verificam daca a ajuns la 8 cafele -> voucher gratuit
     // Sumam cantitatea, nu numaram randuri
-    const { data: allValidated } = await supabase
+    const { data: allValidated } = await supabaseAdmin
         .from('coffee_purchases')
         .select('quantity')
         .eq('user_id', userId)

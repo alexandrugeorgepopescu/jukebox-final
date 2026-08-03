@@ -23,7 +23,7 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         const today = now.toISOString().split('T')[0];
 
         // Câte cafele validate are azi?
-        const { count: visitCount } = await supabase
+        const { count: visitCount } = await supabaseAdmin
             .from('coffee_purchases')
             .select('id', { count: 'exact' })
             .eq('user_id', userId)
@@ -35,7 +35,7 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
         }
 
         // Câte drop-uri a folosit azi?
-        const { count: scanCount } = await supabase
+        const { count: scanCount } = await supabaseAdmin
             .from('scans')
             .select('id', { count: 'exact' })
             .eq('user_id', userId)
@@ -57,14 +57,14 @@ export async function performDrop(userId: string, musicPrefs: string[], isTester
 
     // 3. Alegere Piesă - NUMAI din categoriile selectate de utilizator
     const allCategories = ['RETRO_WAVE', 'CHILL_FLOW', 'GOOD_VIBE', 'BASS_MODE', 'SOUL_SELECT', 'MAIN_CHARACTER'];
-    let { data: songs, error: fetchErr } = await supabase
+    let { data: songs, error: fetchErr } = await supabaseAdmin
         .from('songs')
         .select('*')
         .filter('active', 'eq', true)
         .in('category', musicPrefs && musicPrefs.length > 0 ? musicPrefs : allCategories);
 
     if (fetchErr || !songs || songs.length === 0) {
-        const { data: fallback } = await supabase.from('songs').select('*').limit(10);
+        const { data: fallback } = await supabaseAdmin.from('songs').select('*').limit(10);
         songs = fallback || [];
     }
 

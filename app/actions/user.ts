@@ -8,17 +8,17 @@ export async function getUserData(userId: string) {
     noStore();
 
     const [playlists, rewards, coffeePurchases] = await Promise.all([
-        supabase
+        supabaseAdmin
             .from('user_playlists')
             .select('listened_at, songs(*)')
             .eq('user_id', userId)
             .order('listened_at', { ascending: false }),
-        supabase
+        supabaseAdmin
             .from('rewards')
             .select('*')
             .eq('user_id', userId)
             .order('created_at', { ascending: false }),
-        supabase
+        supabaseAdmin
             .from('coffee_purchases')
             .select('quantity')
             .eq('user_id', userId)
@@ -39,7 +39,7 @@ export async function getUserData(userId: string) {
 
 export async function getAnnouncements() {
     noStore();
-    const { data } = await supabase
+    const { data } = await supabaseAdmin
         .from('announcements')
         .select('*')
         .eq('active', true)
@@ -58,7 +58,7 @@ export async function checkBirthdayReward(userId: string, birthDate?: string) {
 
     // Verifica daca nu a primit deja cadoul de ziua azi
     const thisYear = today.getFullYear();
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
         .from('rewards')
         .select('id')
         .eq('user_id', userId)
@@ -79,7 +79,7 @@ export async function checkBirthdayReward(userId: string, birthDate?: string) {
 }
 
 export async function redeemReward(rewardId: string) {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
         .from('rewards')
         .update({
             redeemed: true,
