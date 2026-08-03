@@ -22,7 +22,17 @@ function ResetPasswordForm() {
     // Supabase trimite token-ul ca fragment (#access_token=...) în URL.
     // Trebuie să așteptăm ca supabase să proceseze sesiunea din fragment.
     useEffect(() => {
-        supabase.auth.onAuthStateChange(async (event, session) => {
+        const hasToken = typeof window !== "undefined" && 
+            (window.location.hash.includes("access_token") || window.location.hash.includes("type=recovery"));
+
+        if (!hasToken) {
+            setStatus("error");
+            setMessage("Nu ai accesat această pagină printr-un link de resetare valid din email. Mergi pe prima pagină și cere un link nou.");
+            // Lăsăm sessionReady false dar setăm starea de eroare
+            return;
+        }
+
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event === "PASSWORD_RECOVERY" && session) {
                 setSessionReady(true);
             }
