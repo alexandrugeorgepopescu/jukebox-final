@@ -20,38 +20,38 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 const newsItems = [
     {
-        title: "Bun venit în Tribul Rewind!",
-        body: "Vibe de primăvară și premii zilnice! Dă un spin la Jukebox, descoperă melodia zilei și prinde surprizele din portofel. Îți spunem un secret: negociem cu marile festivaluri pentru a pune la bătaie câte 2 invitații VIP pe fiecare categorie muzicală! Până la marele anunț, bucură-te de voucherele tale zilnice la bar.",
-        category: "event",
-        emoji: "🎵",
+        title: "Bombon de la Dropshot: Ritmul verii în ceașcă",
+        body: "Simte textura catifelată a noului blend de specialitate co-fermentat anaerob! Închide ochii și lasă-te purtat de acordurile dulci de căpșuni coapte, vanilie fină și ciocolată cremoasă. O aromă intensă care îți inundă simțurile ca un milkshake glaciar de vară. Cere-o la bar și upgradează-ți frecvența!",
+        category: "menu",
+        emoji: "🍓",
         active: true
     },
     {
-        title: "A 9-a cafea e mereu din partea casei!",
-        body: "Ritmul tău merită răsplătit. Savurează 8 cafele la noi, iar sistemul îți generează automat un voucher cadou direct în portofelul tău digital. Fără cartoane pierdute, doar o experiență simplă, rapidă și cu gust de „mai vreau”. Ne vedem la cafea?",
+        title: "Play pe vacanță, Pause la Rewind!",
+        body: "Fie că îți pregătești bagajele și vrei un boost de energie înainte de drum, fie că te întorci cu povești proaspete de pe plajă, tribul te așteaptă! Oprește-te o secundă, ascultă basul din locație și privește cum se prepară ritualul tău preferat. Suntem aici și înainte, și după vacanță, pe aceeași lungime de undă.",
+        category: "event",
+        emoji: "✈️",
+        active: true
+    },
+    {
+        title: "Rewind Alexandru este oficial ONLINE!",
+        body: "Ritmul urban se extinde! Vezi noua noastră scenă din Kaufland Alexandru, un spațiu complet reconfigurat pentru energia ta. Acum ne găsești în trei puncte cheie din Iași: vibe-ul rapid din Kaufland Păcurari, designul modern din Kaufland Alexandru și atmosfera relaxantă din Family Market Miroslava. Treci să ne auzi și să ne simți aproape!",
+        category: "event",
+        emoji: "🏪",
+        active: true
+    },
+    {
+        title: "Sunetul verii aduce premii în portofel",
+        body: "Dă un spin la Jukebox-ul digital din aplicație și prinde frecvența norocoasă! În august 2026, am dublat surprizele ascunse în melodii. Privește ecranul, ascultă piesa extrasă și simte bucuria când portofelul tău se luminează cu un voucher cadou. Ritmul verii se trăiește live la bar!",
+        category: "promo",
+        emoji: "🎟️",
+        active: true
+    },
+    {
+        title: "Răsplătim rezonanța ta: A 9-a cafea cadou",
+        body: "Fără cartoane rătăcite prin buzunare, doar energie pură monitorizată digital. Privește cum se adună punctele tale de loialitate la fiecare vizită validată de barista. La 8 cafele savurate, sistemul îți trimite instant un voucher gratuit în portofel. Simte gustul unui cadou binemeritat!",
         category: "promo",
         emoji: "☕",
-        active: true
-    },
-    {
-        title: "Călătorie la origini: Păcurari vs. Miroslava",
-        body: "Primăvara asta schimbăm vibe-ul în ceașcă! Treci pe la Rewind Păcurari pentru opțiunea BOMBON – o explozie exotică cu note de bomboane de căpșuni, ciocolată cu lapte și vanilie. Ești în Miroslava? Cere ETHIOPIA GUJI SHAKISO pentru un profil rafinat, cu coacăze negre și nectarine. Tu din ce tabără faci parte?",
-        category: "menu",
-        emoji: "🌍",
-        active: true
-    },
-    {
-        title: "Signature Drinks: Vibe fresh în meniu",
-        body: "Indiferent la care Rewind te afli, te așteptăm cu un Latte Macchiato cremos sau un Matcha Tonic super fresh. Dar dacă ai drum pe la Miroslava, trebuie să încerci vedeta locației noastre: un Espresso Martini perfect echilibrat. Dă un refresh zilei tale!",
-        category: "menu",
-        emoji: "✨",
-        active: true
-    },
-    {
-        title: "Ziua ta = Cafeaua noastră!",
-        body: "Avem grijă să-ți începem ziua perfect! Asigură-te că ți-ai completat data nașterii în profilul tău. Când vine momentul, noi îți trimitem automat un voucher pentru o cafea gratuită direct în cont. Sărbătorește momentele bune alături de tribul tău!",
-        category: "promo",
-        emoji: "🎂",
         active: true
     }
 ];

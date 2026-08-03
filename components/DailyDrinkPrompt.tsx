@@ -195,6 +195,12 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
         lat: 47.16102361939559, 
         lng: 27.575434156561894, 
         dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.16102361939559, 27.575434156561894) 
+    },
+    { 
+        name: "Birou Alexandru (Test)", 
+        lat: 47.121484748827186, 
+        lng: 27.570058466395786, 
+        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.121484748827186, 27.570058466395786) 
     }
 );
                 }
