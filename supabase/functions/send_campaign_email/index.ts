@@ -107,10 +107,43 @@ serve(async (req) => {
             return new Response(JSON.stringify({ error: "UNSUBSCRIBE_SECRET is not set" }), { status: 500 });
         }
 
+        let bodyJson: any = {};
+        try {
+            if (req.method === "POST") {
+                bodyJson = await req.json();
+            }
+        } catch { }
+
         // Extrage utilizatorii eligibili
-        const { data: users, error: rpcError } = await supabase.rpc("get_email_segments");
+        let { data: users, error: rpcError } = await supabase.rpc("get_email_segments");
         if (rpcError) {
             return new Response(JSON.stringify({ error: rpcError.message }), { status: 500 });
+        }
+
+        // Suport pentru testare izolata pe o singura adresa de email
+        if (bodyJson?.test_email) {
+            const targetEmail = String(bodyJson.test_email).toLowerCase();
+            users = (users || []).filter((u: any) => u.email.toLowerCase() === targetEmail);
+
+            if (!users || users.length === 0) {
+                const { data: testUser } = await supabase
+                    .from("users")
+                    .select("id, name, email")
+                    .eq("email", targetEmail)
+                    .single();
+
+                if (testUser) {
+                    users = [{
+                        user_id: testUser.id,
+                        email: testUser.email,
+                        name: testUser.name,
+                        segment: "aproape_de_premiu",
+                        coffees_remained: 1
+                    }];
+                } else {
+                    return new Response(JSON.stringify({ error: `User with email ${targetEmail} not found in users table.` }), { status: 404 });
+                }
+            }
         }
 
         const sentLogs = [];
