@@ -120,7 +120,7 @@ serve(async (req) => {
             return new Response(JSON.stringify({ error: rpcError.message }), { status: 500 });
         }
 
-        // Suport pentru testare izolata pe o singura adresa de email
+        // Suport pentru testare izolata pe o singura adresa de email (forțează trimiterea chiar dacă userul nu e în DB sau segmentat)
         if (bodyJson?.test_email) {
             const targetEmail = String(bodyJson.test_email).toLowerCase();
             users = (users || []).filter((u: any) => u.email.toLowerCase() === targetEmail);
@@ -141,7 +141,14 @@ serve(async (req) => {
                         coffees_remained: 1
                     }];
                 } else {
-                    return new Response(JSON.stringify({ error: `User with email ${targetEmail} not found in users table.` }), { status: 404 });
+                    // Fallback: trimite emailul de test chiar dacă contul nu este încă creat în tabela users!
+                    users = [{
+                        user_id: "00000000-0000-0000-0000-000000000000",
+                        email: targetEmail,
+                        name: "Tester Rewind",
+                        segment: "aproape_de_premiu",
+                        coffees_remained: 1
+                    }];
                 }
             }
         }
@@ -178,11 +185,13 @@ serve(async (req) => {
 
             if (resendRes.ok) {
                 // Înregistrează expedierea în email_log (anti-spam 14 zile)
-                await supabase.from("email_log").insert({
-                    user_id: user.user_id,
-                    segment: user.segment,
-                    template_key: user.segment
-                });
+                if (user.user_id !== "00000000-0000-0000-0000-000000000000") {
+                    await supabase.from("email_log").insert({
+                        user_id: user.user_id,
+                        segment: user.segment,
+                        template_key: user.segment
+                    });
+                }
                 sentLogs.push({ user_id: user.user_id, email: user.email, segment: user.segment });
             }
         }
