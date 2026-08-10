@@ -176,12 +176,14 @@ serve(async (req) => {
                     "Authorization": `Bearer ${RESEND_API_KEY}`
                 },
                 body: JSON.stringify({
-                    from: "Rewind Cafe <vibe@send.rewindcafe.ro>",
+                    from: "Rewind Cafe <onboarding@resend.dev>",
                     to: [user.email],
                     subject: templateObj.subject,
                     html: htmlContent
                 })
             });
+
+            const resendData = await resendRes.json();
 
             if (resendRes.ok) {
                 // Înregistrează expedierea în email_log (anti-spam 14 zile)
@@ -192,7 +194,9 @@ serve(async (req) => {
                         template_key: user.segment
                     });
                 }
-                sentLogs.push({ user_id: user.user_id, email: user.email, segment: user.segment });
+                sentLogs.push({ user_id: user.user_id, email: user.email, segment: user.segment, resend_id: resendData.id });
+            } else {
+                return new Response(JSON.stringify({ error: "Resend API Error", resend_details: resendData }), { status: 400 });
             }
         }
 
