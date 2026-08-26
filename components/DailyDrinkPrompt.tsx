@@ -161,63 +161,97 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
         }
     };
 
+    const watchRef = useRef<number | null>(null);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const [validatedLocation, setValidatedLocation] = useState<string | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (watchRef.current !== null) navigator.geolocation.clearWatch(watchRef.current);
+            if (timerRef.current !== null) clearTimeout(timerRef.current);
+        };
+    }, []);
+
+    const stopGpsTracking = () => {
+        if (watchRef.current !== null) {
+            navigator.geolocation.clearWatch(watchRef.current);
+            watchRef.current = null;
+        }
+        if (timerRef.current !== null) {
+            clearTimeout(timerRef.current);
+            timerRef.current = null;
+        }
+    };
+
     const handleGPS = () => {
+        stopGpsTracking();
         setGpsStatus("checking");
         setError(null);
+
         if (!navigator.geolocation) {
             setGpsStatus("fail");
-            setError("Browser-ul tău nu suportă GPS. Roagă barista să valideze.");
+            setError("Browser-ul tău nu suportă GPS. Barista te poate valida direct cu PIN-ul.");
+            setTimeout(() => setStep("pin"), 1200);
             return;
         }
-        navigator.geolocation.getCurrentPosition(
+
+        const radius = parseFloat(config.cafe_radius_meters || "150");
+        const maxAccuracy = parseFloat(config.max_gps_accuracy_meters || "200");
+
+        // Timeout 7 secunde -> Fallback pe PIN fără eroare blocantă
+        timerRef.current = setTimeout(() => {
+            stopGpsTracking();
+            setGpsStatus("fail");
+            setError("Semnalul GPS se stabilizează mai greu. Barista te poate valida direct cu PIN-ul.");
+            setTimeout(() => setStep("pin"), 1500);
+        }, 7000);
+
+        watchRef.current = navigator.geolocation.watchPosition(
             (pos) => {
-                const radius = parseFloat(config.cafe_radius_meters || "150");
-                const distances = cafeLocations.map(cafe => ({
-                    ...cafe,
-                    dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, cafe.lat, cafe.lng)
-                }));
-                if (distances.length === 0) {
-                    distances.push(
-    { 
-        name: "Rewind Cafe Pacurari", 
-        lat: 47.174434, 
-        lng: 27.537209, 
-        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.174434, 27.537209) 
-    },
-    { 
-        name: "Rewind Cafe Miroslava", 
-        lat: 47.145912, 
-        lng: 27.528504, 
-        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.145912, 27.528504) 
-    },
-    { 
-        name: "Rewind Cafe Alexandru", 
-        lat: 47.16102361939559, 
-        lng: 27.575434156561894, 
-        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.16102361939559, 27.575434156561894) 
-    },
-    { 
-        name: "Birou Alexandru (Test)", 
-        lat: 47.121484748827186, 
-        lng: 27.570058466395786, 
-        dist: getDistanceMeters(pos.coords.latitude, pos.coords.longitude, 47.121484748827186, 27.570058466395786) 
-    }
-);
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                const accuracy = pos.coords.accuracy || 0;
+
+                // Plafon 200m: ignorăm citirile foarte imprecise (turn GSM/Wi-Fi > 200m)
+                if (accuracy > maxAccuracy) {
+                    return;
                 }
-                const nearest = distances.reduce((a, b) => a.dist < b.dist ? a : b);
-                if (nearest.dist <= radius) {
+
+                // Exclusiv cele 3 locații fizice reale în producție
+                const defaultCafes = [
+                    { name: "Rewind Cafe Pacurari", lat: 47.174434, lng: 27.537209 },
+                    { name: "Rewind Cafe Miroslava", lat: 47.145912, lng: 27.528504 },
+                    { name: "Rewind Cafe Alexandru", lat: 47.16102361939559, lng: 27.575434156561894 }
+                ];
+
+                const activeCafes = cafeLocations.length > 0 ? cafeLocations : defaultCafes;
+
+                const evaluatedCafes = activeCafes.map(cafe => {
+                    const rawDist = getDistanceMeters(lat, lng, cafe.lat, cafe.lng);
+                    const effectiveDist = Math.max(0, rawDist - accuracy);
+                    return { ...cafe, rawDist, effectiveDist, accuracy };
+                });
+
+                const nearest = evaluatedCafes.reduce((a, b) => a.effectiveDist < b.effectiveDist ? a : b);
+
+                // Regula: (rawDist - accuracy) <= radius
+                if (nearest.effectiveDist <= radius) {
+                    stopGpsTracking(); // clearWatch OBLIGATORIU la citire validă
+
+                    const locationLog = `${nearest.name} (GPS ±${Math.round(accuracy)}m)`;
+                    setValidatedLocation(locationLog);
+
                     setGpsStatus("ok");
                     setTimeout(() => setStep("pin"), 600);
-                } else {
-                    setGpsStatus("fail");
-                    setError(`Ești la ${Math.round(nearest.dist)}m de ${nearest.name}. Trebuie să fii în raza de ${radius}m.`);
                 }
             },
-            () => {
+            (err) => {
+                stopGpsTracking();
                 setGpsStatus("fail");
-                setError("Nu am putut accesa locația. Activează GPS-ul și încearcă din nou.");
+                setError("Nu am putut accesa geolocalizarea. Barista te poate valida direct cu PIN-ul.");
+                setTimeout(() => setStep("pin"), 1500);
             },
-            { timeout: 10000, enableHighAccuracy: true }
+            { enableHighAccuracy: true, maximumAge: 0 }
         );
     };
 
@@ -226,9 +260,16 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
         setLoading(true);
         setError(null);
         try {
-            // Register each drink separately
+            // Trimite și locația cu acuratețe logată (ex: "Rewind Cafe Pacurari (GPS ±18m)")
             const results = await Promise.all(
-                basket.map(b => registerCoffeePurchase(user.id, b.drinkId, b.qty, pin, false))
+                basket.map(b => registerCoffeePurchase(
+                    user.id, 
+                    b.drinkId, 
+                    b.qty, 
+                    pin, 
+                    false, 
+                    validatedLocation || undefined
+                ))
             );
             const failed = results.find(r => r.error);
             if (failed) {

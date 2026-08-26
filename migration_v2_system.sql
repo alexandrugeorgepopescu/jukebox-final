@@ -325,3 +325,9 @@ BEGIN
       );
 END;
 $$;
+
+-- 7. CONFIG: Plafon Acuratețe GPS (modificabil din Supabase fara redeploy)
+INSERT INTO public.config (key, value)
+VALUES ('max_gps_accuracy_meters', '200')
+ON CONFLICT (key) DO UPDATE SET value = '200';
+
