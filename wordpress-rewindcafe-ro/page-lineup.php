@@ -292,38 +292,56 @@ get_header(); ?>
                 </div>
             </div>
 
-            <!-- 9. ANA & REBECA (NEW ENTRY - SISTER DUO) -->
-            <div class="md:col-span-2 bg-rewind-black text-white rounded-3xl p-8 md:p-14 shadow-2xl border border-white/10 relative overflow-hidden group">
-                <div class="absolute top-1/2 right-10 -translate-y-1/2 w-80 h-80 bg-rewind-violet/20 rounded-full blur-[100px] pointer-events-none"></div>
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-center relative z-10">
-                    <!-- Double Vinyl Visual -->
-                    <div class="md:col-span-5 flex items-center justify-center py-6">
-                        <div class="relative flex items-center justify-center">
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-zinc-900 border-4 border-white/15 flex items-center justify-center shadow-2xl transform -translate-x-4 group-hover:rotate-12 transition-all duration-700">
-                                <div class="w-16 h-16 rounded-full bg-rewind-violet flex items-center justify-center font-dj text-xs tracking-widest uppercase font-bold text-white">ANA</div>
-                            </div>
-                            <div class="w-40 h-40 md:w-48 md:h-48 rounded-full bg-zinc-900 border-4 border-rewind-violet/50 flex items-center justify-center shadow-2xl transform translate-x-4 -ml-12 group-hover:-rotate-12 transition-all duration-700">
-                                <div class="w-16 h-16 rounded-full bg-white text-rewind-black flex items-center justify-center font-dj text-xs tracking-widest uppercase font-bold">REBECA</div>
-                            </div>
-                        </div>
+            <!-- 9. ANA -->
+            <div class="flex flex-col gap-6 group">
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden relative shadow-xl">
+                    <img src="https://app.rewindcafe.ro/images/ana.jpg"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        alt="Ana">
+                </div>
+                <div>
+                    <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-3">
+                        <h3 class="font-dj text-4xl font-bold text-rewind-black uppercase">ANA.</h3>
+                        <span class="font-dj text-rewind-violet text-sm tracking-widest uppercase">Barista & New Entry (The Sister Duo)</span>
                     </div>
+                    <div
+                        class="bg-rewind-black text-white inline-block px-4 py-1 rounded-full text-xs font-dj tracking-wider mb-6">
+                        🌟 NEW WAVE (Pure Smile. Rising Star.)
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6 font-light">
+                        Ana face parte din cel mai proaspăt „new entry” al familiei REWIND. Alături de sora ei, Rebeca, aduce în spatele barului o energie luminoasă, zâmbete sincere de la prima oră a dimineții și dorința de a pregăti de fiecare dată cea mai bună cafea pentru tine. În ele ne punem speranța și încrederea că vor duce locațiile noastre în topul ieșean.
+                    </p>
+                    <div class="border-l-2 border-rewind-violet pl-4 py-1">
+                        <span
+                            class="block text-xs font-bold text-rewind-violet uppercase tracking-widest mb-1">Superputere</span>
+                        <span class="font-dj text-lg text-rewind-black">Zâmbet molipsitor și cafea făcută din tot sufletul.</span>
+                    </div>
+                </div>
+            </div>
 
-                    <!-- Description -->
-                    <div class="md:col-span-7">
-                        <div class="flex flex-wrap items-baseline gap-4 mb-3">
-                            <h3 class="font-dj text-4xl md:text-5xl font-bold text-white uppercase">ANA & REBECA.</h3>
-                            <span class="font-dj text-rewind-violet text-sm tracking-widest uppercase">New Entry & The Sister Duo</span>
-                        </div>
-                        <div class="bg-rewind-violet/20 border border-rewind-violet/40 text-purple-200 inline-block px-4 py-1 rounded-full text-xs font-dj tracking-wider mb-6">
-                            🌟 NEW WAVE DUO (Double the Smile. Double the Energy.)
-                        </div>
-                        <p class="text-gray-300 leading-relaxed mb-6 font-light">
-                            Ana și Rebeca sunt cel mai proaspăt „new entry” din familia REWIND — două surori mereu zâmbitoare, pline de viață și gata în fiecare dimineață să facă cea mai bună cafea pentru tine. În ele ne punem toată speranța și încrederea că vor duce locațiile noastre în topul ieșean, aducând acea chimie autentică pe care doar două surori o pot crea în spatele barului.
-                        </p>
-                        <div class="border-l-2 border-rewind-violet pl-4 py-1">
-                            <span class="block text-xs font-bold text-rewind-violet uppercase tracking-widest mb-1">Superputere</span>
-                            <span class="font-dj text-lg text-white">Sincronizare de surori, zâmbete molipsitoare și ambiția de a duce REWIND în topul Iașului.</span>
-                        </div>
+            <!-- 10. REBECA -->
+            <div class="flex flex-col gap-6 group md:mt-24">
+                <div class="aspect-[4/5] rounded-3xl overflow-hidden relative shadow-xl">
+                    <img src="https://app.rewindcafe.ro/images/rebeca.jpg"
+                        class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        alt="Rebeca">
+                </div>
+                <div>
+                    <div class="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-3">
+                        <h3 class="font-dj text-4xl font-bold text-rewind-black uppercase">REBECA.</h3>
+                        <span class="font-dj text-rewind-violet text-sm tracking-widest uppercase">Barista & New Entry (The Sister Duo)</span>
+                    </div>
+                    <div
+                        class="bg-rewind-black text-white inline-block px-4 py-1 rounded-full text-xs font-dj tracking-wider mb-6">
+                        ✨ SISTER ENERGY (Double the Vibe. Top Ambition.)
+                    </div>
+                    <p class="text-gray-700 leading-relaxed mb-6 font-light">
+                        Rebeca completează duo-ul de surori care dă un suflu nou echipei REWIND. Mereu zâmbitoare, atentă la detalii și gata în fiecare clipă să îți ofere cea mai bună cafea, Rebeca formează împreună cu sora ei Ana echipa în care ne punem toată speranța că va ridica locațiile noastre în topul ieșean.
+                    </p>
+                    <div class="border-l-2 border-rewind-violet pl-4 py-1">
+                        <span
+                            class="block text-xs font-bold text-rewind-violet uppercase tracking-widest mb-1">Superputere</span>
+                        <span class="font-dj text-lg text-rewind-black">Sincronizare de surori și ambiția de a duce REWIND în topul Iașului.</span>
                     </div>
                 </div>
             </div>
