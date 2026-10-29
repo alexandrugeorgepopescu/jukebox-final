@@ -33,10 +33,9 @@
     <div class="container mx-auto px-4 max-w-6xl flex flex-col md:flex-row items-center gap-16">
         <div class="w-full md:w-1/2 relative group">
             <div class="absolute inset-0 bg-rewind-violet rotate-3 rounded-3xl opacity-10"></div>
-            <div
-                class="relative z-10 rounded-3xl shadow-2xl w-full aspect-square md:aspect-auto md:h-[500px] bg-gray-200 flex items-center justify-center text-gray-400 font-dj tracking-widest">
-                Imagine Lipsă (pahar.jpg)
-            </div>
+            <img src="<?php echo get_template_directory_uri(); ?>/images/pahari.jpg"
+                class="relative z-10 rounded-3xl shadow-2xl w-full aspect-square md:aspect-auto md:h-[800px] object-cover"
+                alt="Rewind Coffee">
         </div>
 
         <div class="w-full md:w-1/2">
@@ -77,27 +76,35 @@
             <h2 class="font-dj font-bold text-5xl tracking-tighter mb-4 text-rewind-black text-center">MENIU</h2>
             <div class="w-16 h-1 bg-rewind-violet mx-auto mb-12"></div>
 
-            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-                <!-- Location Toggle -->
+            <!-- 4 Location Buttons -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16">
                 <button onclick="toggleMenu('pacurari')" id="btn-pacurari"
-                    class="w-full sm:w-80 font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-rewind-violet text-white border-rewind-violet shadow-lg transform -translate-y-1">
-                    Păcurari & Alexandru (To Go)
+                    class="w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-rewind-violet text-white border-rewind-violet shadow-lg transform -translate-y-1">
+                    Kaufland Păcurari (To Go)
+                </button>
+                <button onclick="toggleMenu('alexandru')" id="btn-alexandru"
+                    class="w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet">
+                    Kaufland Alexandru (To Go)
+                </button>
+                <button onclick="toggleMenu('tudor')" id="btn-tudor"
+                    class="w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet">
+                    Kaufland Tudor (În curând)
                 </button>
                 <button onclick="toggleMenu('miroslava')" id="btn-miroslava"
-                    class="w-full sm:w-80 font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet">
+                    class="w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet">
                     Miroslava (Cafenea)
                 </button>
             </div>
         </div>
 
-        <!-- ====================== PĂCURARI & ALEXANDRU MENU ====================== -->
+        <!-- ====================== 1. KAUFLAND PĂCURARI MENU ====================== -->
         <div id="menu-pacurari"
             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch transition-all duration-500">
 
             <!-- HOT COFFEE -->
             <div
                 class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 col-span-1 md:col-span-2 h-full flex flex-col">
-                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE</h3>
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE — PĂCURARI</h3>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="font-dj font-bold text-rewind-black text-sm">Espresso / Espresso Dublu</span>
@@ -161,8 +168,7 @@
             <!-- COLD COFFEE -->
             <div
                 class="bg-rewind-black text-white p-6 rounded-3xl shadow-xl border border-white/10 col-span-1 md:col-span-2 h-full flex flex-col">
-                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-white/10 pb-2">COLD COFFEE
-                </h3>
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-white/10 pb-2">COLD COFFEE — PĂCURARI</h3>
                 <div class="space-y-4">
                     <div class="flex justify-between items-center">
                         <span class="font-dj font-bold text-sm">Iced Espresso</span>
@@ -218,13 +224,267 @@
             </div>
         </div>
 
-        <!-- MIROSLAVA MENU -->
+        <!-- ====================== 2. KAUFLAND ALEXANDRU MENU ====================== -->
+        <div id="menu-alexandru"
+            class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch transition-all duration-500">
+
+            <!-- HOT COFFEE -->
+            <div
+                class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 col-span-1 md:col-span-2 h-full flex flex-col">
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE — ALEXANDRU</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Espresso / Espresso Dublu</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 / 10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Americano / Long Black</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 / 10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Espresso Macchiato</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">9 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cappuccino</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">11 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cappucino Vienez</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">14 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Latte Macchiato</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cortado</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Flat White</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Caffe Latte / Large Latte</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">14 / 16 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Matcha Latte</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Mint Hot Chocolate</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Ciocolată caldă</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">10 / 12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Ceai Infuzie</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Babyccino</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 LEI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLD COFFEE -->
+            <div
+                class="bg-rewind-black text-white p-6 rounded-3xl shadow-xl border border-white/10 col-span-1 md:col-span-2 h-full flex flex-col">
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-white/10 pb-2">COLD COFFEE — ALEXANDRU</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Espresso</span>
+                        <span class="font-dj font-bold text-sm">14 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Latte</span>
+                        <span class="font-dj font-bold text-sm">16 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Vanilla / Salt Caramel Iced Latte</span>
+                        <span class="font-dj font-bold text-sm">19 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Espresso Tonic</span>
+                        <span class="font-dj font-bold text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Orange Espresso</span>
+                        <span class="font-dj font-bold text-sm">17 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Frozen Cappuccino</span>
+                        <span class="font-dj font-bold text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Ness Frappe</span>
+                        <span class="font-dj font-bold text-sm">16 / 18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Tea Fructe</span>
+                        <span class="font-dj font-bold text-sm">12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Fresh</span>
+                        <span class="font-dj font-bold text-sm">15 / 20 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Limonadă</span>
+                        <span class="font-dj font-bold text-sm">14 / 16 LEI</span>
+                    </div>
+                </div>
+                <!-- EXTRA -->
+                <div class="mt-8 border-t border-white/10 pt-4">
+                    <h3 class="font-brand text-rewind-violet text-lg mb-4">EXTRA</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span>Arome</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Frișcă</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Extra espresso</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Lapte vegetal</span> <span>4 lei</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================== 3. KAUFLAND TUDOR MENU ====================== -->
+        <div id="menu-tudor"
+            class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch transition-all duration-500">
+
+            <!-- HOT COFFEE -->
+            <div
+                class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 col-span-1 md:col-span-2 h-full flex flex-col">
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE — TUDOR (ÎN CURÂND)</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Espresso / Espresso Dublu</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 / 10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Americano / Long Black</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 / 10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Espresso Macchiato</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">9 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cappuccino</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">11 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cappucino Vienez</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">14 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Latte Macchiato</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Cortado</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Flat White</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Caffe Latte / Large Latte</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">14 / 16 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Matcha Latte</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Mint Hot Chocolate</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">13 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Ciocolată caldă</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">10 / 12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Ceai Infuzie</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">10 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-rewind-black text-sm">Babyccino</span>
+                        <span class="font-dj font-bold text-rewind-black text-sm">8 LEI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLD COFFEE -->
+            <div
+                class="bg-rewind-black text-white p-6 rounded-3xl shadow-xl border border-white/10 col-span-1 md:col-span-2 h-full flex flex-col">
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-white/10 pb-2">COLD COFFEE — TUDOR (ÎN CURÂND)</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Espresso</span>
+                        <span class="font-dj font-bold text-sm">14 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Latte</span>
+                        <span class="font-dj font-bold text-sm">16 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Vanilla / Salt Caramel Iced Latte</span>
+                        <span class="font-dj font-bold text-sm">19 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Espresso Tonic</span>
+                        <span class="font-dj font-bold text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Orange Espresso</span>
+                        <span class="font-dj font-bold text-sm">17 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Frozen Cappuccino</span>
+                        <span class="font-dj font-bold text-sm">18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Ness Frappe</span>
+                        <span class="font-dj font-bold text-sm">16 / 18 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Iced Tea Fructe</span>
+                        <span class="font-dj font-bold text-sm">12 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Fresh</span>
+                        <span class="font-dj font-bold text-sm">15 / 20 LEI</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-dj font-bold text-sm">Limonadă</span>
+                        <span class="font-dj font-bold text-sm">14 / 16 LEI</span>
+                    </div>
+                </div>
+                <!-- EXTRA -->
+                <div class="mt-8 border-t border-white/10 pt-4">
+                    <h3 class="font-brand text-rewind-violet text-lg mb-4">EXTRA</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between"><span>Arome</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Frișcă</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Extra espresso</span> <span>3 lei</span></div>
+                        <div class="flex justify-between"><span>Lapte vegetal</span> <span>4 lei</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================== 4. MIROSLAVA MENU ====================== -->
         <div id="menu-miroslava"
             class="hidden grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch transition-all duration-500">
 
             <!-- HOT COFFEE -->
             <div class="bg-white p-6 rounded-3xl shadow-md border border-gray-100 h-full flex flex-col">
-                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE</h3>
+                <h3 class="font-brand text-rewind-violet text-xl mb-6 border-b border-gray-100 pb-2">HOT COFFEE — MIROSLAVA</h3>
                 <div class="space-y-4 flex-grow">
                     <div class="flex justify-between items-center">
                         <span class="font-dj font-bold text-rewind-black text-sm">Espresso / Espresso Dublu</span>
@@ -378,7 +638,7 @@
     </div>
 </section>
 
-<!-- LOCATION SECTION -->
+<!-- LOCATION SECTION (ALL 4 LOCATIONS) -->
 <section id="locatie" class="bg-rewind-black text-white py-32 px-4 font-bold font-dj">
     <div class="container mx-auto max-w-6xl">
         <h2 class="font-bold text-4xl md:text-6xl mb-20 uppercase tracking-tight text-center">
@@ -386,11 +646,11 @@
             <span class="text-rewind-violet block md:inline md:ml-4 tracking-[0.4em]">REWIND</span>
         </h2>
 
-        <div class="grid md:grid-cols-2 gap-12 text-left">
-            <!-- 1. PĂCURARI -->
-            <div class="flex flex-col h-full space-y-6">
+        <div class="grid md:grid-cols-2 gap-16 text-left">
+            <!-- 1. REWIND PĂCURARI -->
+            <div class="flex flex-col h-full space-y-8">
                 <div class="bg-white/5 p-10 rounded-3xl border border-white/10 flex-grow">
-                    <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-2">REWIND PĂCURARI</h3>
+                    <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-4">REWIND PĂCURARI</h3>
                     <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
                         Kaufland Păcurari)</p>
                     <p class="text-lg mb-6 leading-tight">Șoseaua Păcurari 86m, 700547 Iași</p>
@@ -402,7 +662,7 @@
                     </div>
                 </div>
                 <div
-                    class="w-full h-72 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
+                    class="w-full h-80 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d169.50961528818024!2d27.537118730177824!3d47.1744243732085!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cafb255fc0f94d%3A0x7177760909cd13b!2sRewind%20Cafe!5e0!3m2!1sen!2sro!4v1768842279179!5m2!1sen!2sro"
                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
@@ -410,36 +670,10 @@
                 </div>
             </div>
 
-            <!-- 2. ALEXANDRU -->
-            <div class="flex flex-col h-full space-y-6">
+            <!-- 2. REWIND MIROSLAVA -->
+            <div class="flex flex-col h-full space-y-8">
                 <div class="bg-white/5 p-10 rounded-3xl border border-white/10 flex-grow">
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <h3 class="font-dj text-rewind-violet text-2xl uppercase">REWIND ALEXANDRU</h3>
-                        <span class="px-3 py-1 rounded-full bg-rewind-violet/20 border border-rewind-violet/40 text-rewind-violet text-[10px] tracking-widest uppercase">Deschis</span>
-                    </div>
-                    <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
-                        Kaufland Alexandru cel Bun)</p>
-                    <p class="text-lg mb-6 leading-tight">Strada Tabacului 2A, 700440 Iași</p>
-                    <div class="border-t border-white/10 pt-6">
-                        <span
-                            class="block text-rewind-violet text-xs font-dj mb-2 uppercase tracking-widest">Program</span>
-                        <span class="text-xl block">L-S: 07:00 - 18:30</span>
-                        <span class="text-xl block">DUMINICĂ: 08:00 - 19:00</span>
-                    </div>
-                </div>
-                <div
-                    class="w-full h-72 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
-                    <iframe
-                        src="https://www.google.com/maps?q=Kaufland+Alexandru+cel+Bun+Strada+Tabacului+2A+Iasi&output=embed"
-                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
-                </div>
-            </div>
-
-            <!-- 3. MIROSLAVA -->
-            <div class="flex flex-col h-full space-y-6">
-                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 flex-grow">
-                    <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-2">REWIND MIROSLAVA</h3>
+                    <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-4">REWIND MIROSLAVA</h3>
                     <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
                         Family Market)</p>
                     <p class="text-lg mb-6 leading-tight">Strada Constantin Langa 91B, Miroslava</p>
@@ -451,32 +685,55 @@
                     </div>
                 </div>
                 <div
-                    class="w-full h-72 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
+                    class="w-full h-80 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
                     <iframe
                         src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d678.4027674546635!2d27.5286705!3d47.1458853!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40cafb58ac476eaf%3A0xe7cbccf9395d85d7!2sRewind%20Cafe!5e0!3m2!1sen!2sro!4v1768323906611!5m2!1sen!2sro"
                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                 </div>
             </div>
 
-            <!-- 4. TUDOR (COMING SOON) -->
-            <div class="flex flex-col h-full space-y-6">
-                <div class="bg-white/5 p-10 rounded-3xl border border-amber-400/30 flex-grow relative overflow-hidden">
-                    <div class="flex items-center justify-between gap-2 mb-2">
-                        <h3 class="font-dj text-amber-400 text-2xl uppercase">REWIND TUDOR</h3>
-                        <span class="px-3 py-1 rounded-full bg-amber-400/20 border border-amber-400/40 text-amber-300 text-[10px] tracking-widest uppercase">În curând</span>
-                    </div>
+            <!-- 3. REWIND ALEXANDRU -->
+            <div class="flex flex-col h-full space-y-8">
+                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 flex-grow">
+                    <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-4">REWIND ALEXANDRU</h3>
                     <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
-                        Kaufland Tudor Vladimirescu)</p>
-                    <p class="text-lg mb-6 leading-tight">Bulevardul Chimiei 2, 700291 Iași</p>
+                        Kaufland Alexandru)</p>
+                    <p class="text-lg mb-6 leading-tight">Strada Tabacului 2A, 700440 Iași</p>
                     <div class="border-t border-white/10 pt-6">
                         <span
-                            class="block text-amber-400 text-xs font-dj mb-2 uppercase tracking-widest">Status</span>
-                        <span class="text-xl block text-gray-300">Deschidere foarte curând!</span>
-                        <span class="text-sm block text-gray-400 mt-1">Pregătim vibe-ul Rewind și în Tudor.</span>
+                            class="block text-rewind-violet text-xs font-dj mb-2 uppercase tracking-widest">Program</span>
+                        <span class="text-xl block">L-S: 07:00 - 18:30</span>
+                        <span class="text-xl block">DUMINICĂ: 08:00 - 19:00</span>
                     </div>
                 </div>
                 <div
-                    class="w-full h-72 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
+                    class="w-full h-80 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
+                    <iframe
+                        src="https://www.google.com/maps?q=Kaufland+Alexandru+cel+Bun+Strada+Tabacului+2A+Iasi&output=embed"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <!-- 4. REWIND TUDOR -->
+            <div class="flex flex-col h-full space-y-8">
+                <div class="bg-white/5 p-10 rounded-3xl border border-white/10 flex-grow">
+                    <div class="flex items-center justify-between gap-2 mb-4">
+                        <h3 class="font-dj text-rewind-violet text-2xl uppercase">REWIND TUDOR</h3>
+                        <span class="px-3 py-1 rounded-full bg-rewind-violet/20 border border-rewind-violet/40 text-rewind-violet text-[10px] tracking-widest uppercase">În curând</span>
+                    </div>
+                    <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
+                        Kaufland Tudor)</p>
+                    <p class="text-lg mb-6 leading-tight">Bulevardul Chimiei 2, 700291 Iași</p>
+                    <div class="border-t border-white/10 pt-6">
+                        <span
+                            class="block text-rewind-violet text-xs font-dj mb-2 uppercase tracking-widest">Program (În curând)</span>
+                        <span class="text-xl block">L-S: 07:00 - 18:30</span>
+                        <span class="text-xl block">DUMINICĂ: 08:00 - 19:00</span>
+                    </div>
+                </div>
+                <div
+                    class="w-full h-80 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
                     <iframe
                         src="https://www.google.com/maps?q=Kaufland+Tudor+Vladimirescu+Bulevardul+Chimiei+2+Iasi&output=embed"
                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
@@ -489,29 +746,23 @@
 
 <script>
     function toggleMenu(location) {
-        const btnPacurari = document.getElementById('btn-pacurari');
-        const btnMiroslava = document.getElementById('btn-miroslava');
-        const menuPacurari = document.getElementById('menu-pacurari');
-        const menuMiroslava = document.getElementById('menu-miroslava');
+        const locations = ['pacurari', 'alexandru', 'tudor', 'miroslava'];
+        const activeClass = "w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-rewind-violet text-white border-rewind-violet shadow-lg transform -translate-y-1";
+        const inactiveClass = "w-full font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet";
 
-        const activeClass = "bg-rewind-violet text-white border-rewind-violet shadow-lg transform -translate-y-1";
-        const inactiveClass = "bg-white text-rewind-black border-rewind-black hover:bg-rewind-violet hover:text-white hover:border-rewind-violet";
-
-        const setBtnState = (btn, isActive) => {
-            btn.className = "w-full sm:w-80 font-dj font-bold tracking-wider text-sm px-6 py-4 rounded-full border-2 transition-all duration-300 " + (isActive ? activeClass : inactiveClass);
-        }
-
-        if (location === 'miroslava') {
-            menuPacurari.classList.add('hidden');
-            menuMiroslava.classList.remove('hidden');
-            setBtnState(btnMiroslava, true);
-            setBtnState(btnPacurari, false);
-        } else {
-            menuMiroslava.classList.add('hidden');
-            menuPacurari.classList.remove('hidden');
-            setBtnState(btnPacurari, true);
-            setBtnState(btnMiroslava, false);
-        }
+        locations.forEach(loc => {
+            const btn = document.getElementById('btn-' + loc);
+            const menu = document.getElementById('menu-' + loc);
+            if (btn && menu) {
+                if (loc === location) {
+                    menu.classList.remove('hidden');
+                    btn.className = activeClass;
+                } else {
+                    menu.classList.add('hidden');
+                    btn.className = inactiveClass;
+                }
+            }
+        });
     }
 </script>
 
