@@ -5,7 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase-admin";
 const EXTRA_CAFE_LOCATIONS: Array<{ name: string; lat: number; lng: number }> = [
     { name: "Rewind Cafe Pacurari", lat: 47.174434, lng: 27.537209 },
     { name: "Rewind Cafe Miroslava", lat: 47.145912, lng: 27.528504 },
-    { name: "Rewind Cafe Alexandru", lat: 47.167054, lng: 27.558252 },
+    { name: "Rewind Cafe Alexandru", lat: 47.16102361939559, lng: 27.575434156561894 },
     { name: "Rewind Cafe Tudor", lat: 47.155830, lng: 27.604610 },
 ];
 
@@ -109,7 +109,7 @@ export async function getConfig() {
 
     let cafeLocations: Array<{ name: string, lat: number, lng: number }> = [];
     if (config.cafe_locations) {
-        try { cafeLocations = JSON.parse(config.cafe_locations); } catch { }
+        try { cafeLocations = JSON.parse(config.cafe_locations).map((c: { name: string, lat: number, lng: number }) => c.name.toLowerCase().includes("alexandru") ? { ...c, lat: 47.16102361939559, lng: 27.575434156561894 } : c); } catch { }
     }
 
     for (const loc of EXTRA_CAFE_LOCATIONS) {

@@ -224,7 +224,7 @@ export default function DailyDrinkPrompt({ user, onLogged }: DailyDrinkPromptPro
                     { name: "Rewind Cafe Alexandru", lat: 47.16102361939559, lng: 27.575434156561894 }
                 ];
 
-                const activeCafes = cafeLocations.length > 0 ? cafeLocations : defaultCafes;
+                const activeCafes = (cafeLocations.length > 0 ? cafeLocations : defaultCafes).map(c => c.name.toLowerCase().includes("alexandru") ? { ...c, lat: 47.16102361939559, lng: 27.575434156561894 } : c);
 
                 const evaluatedCafes = activeCafes.map(cafe => {
                     const rawDist = getDistanceMeters(lat, lng, cafe.lat, cafe.lng);

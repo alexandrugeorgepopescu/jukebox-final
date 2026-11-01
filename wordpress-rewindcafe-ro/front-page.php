@@ -698,7 +698,7 @@
                     <h3 class="font-dj text-rewind-violet text-2xl uppercase mb-4">REWIND ALEXANDRU</h3>
                     <p class="text-gray-400 font-dj text-[10px] tracking-widest mb-6 uppercase italic">(Incinta
                         Kaufland Alexandru)</p>
-                    <p class="text-lg mb-6 leading-tight">Strada Tabacului 2A, 700440 Iași</p>
+                    <p class="text-lg mb-6 leading-tight">Strada Teodor Rășcanu 6A, 700010 Iași</p>
                     <div class="border-t border-white/10 pt-6">
                         <span
                             class="block text-rewind-violet text-xs font-dj mb-2 uppercase tracking-widest">Program</span>
@@ -709,7 +709,7 @@
                 <div
                     class="w-full h-80 rounded-3xl overflow-hidden grayscale hover:grayscale-0 transition duration-700 border border-white/10">
                     <iframe
-                        src="https://www.google.com/maps?q=Kaufland+Alexandru+cel+Bun+Strada+Tabacului+2A+Iasi&output=embed"
+                        src="https://www.google.com/maps?q=Kaufland+Strada+Teodor+Rascanu+6A+Iasi&output=embed"
                         width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>

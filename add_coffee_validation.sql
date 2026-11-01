@@ -29,7 +29,7 @@ ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
 INSERT INTO config (key, value) VALUES ('cafe_locations', '[
   {"name": "Rewind Cafe Pacurari (Kaufland)", "lat": 47.174434, "lng": 27.537209},
   {"name": "Rewind Cafe Miroslava (Family Market)", "lat": 47.145912, "lng": 27.528504},
-  {"name": "Rewind Cafe Alexandru (Kaufland)", "lat": 47.167054, "lng": 27.558252},
+  {"name": "Rewind Cafe Alexandru (Kaufland)", "lat": 47.16102361939559, "lng": 27.575434156561894},
   {"name": "Rewind Cafe Tudor (Kaufland)", "lat": 47.155830, "lng": 27.604610},
   {"name": "Locatie test", "lat": 47.121838, "lng": 27.570153}
 ]')
