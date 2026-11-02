@@ -108,8 +108,21 @@ export async function getConfig() {
     data?.forEach(row => { config[row.key] = row.value; });
 
     let cafeLocations: Array<{ name: string, lat: number, lng: number }> = [];
+    let shouldSyncDb = false;
+
     if (config.cafe_locations) {
-        try { cafeLocations = JSON.parse(config.cafe_locations).map((c: { name: string, lat: number, lng: number }) => c.name.toLowerCase().includes("alexandru") ? { ...c, lat: 47.16102361939559, lng: 27.575434156561894 } : c); } catch { }
+        try {
+            const parsed: Array<{ name: string, lat: number, lng: number }> = JSON.parse(config.cafe_locations);
+            cafeLocations = parsed.map((c) => {
+                if (c.name.toLowerCase().includes("alexandru")) {
+                    if (Math.abs(c.lat - 47.16102361939559) > 0.0001 || Math.abs(c.lng - 27.575434156561894) > 0.0001) {
+                        shouldSyncDb = true;
+                    }
+                    return { ...c, lat: 47.16102361939559, lng: 27.575434156561894 };
+                }
+                return c;
+            });
+        } catch { }
     }
 
     for (const loc of EXTRA_CAFE_LOCATIONS) {
@@ -118,7 +131,16 @@ export async function getConfig() {
         );
         if (!exists) {
             cafeLocations.push(loc);
+            shouldSyncDb = true;
         }
+    }
+
+    if (shouldSyncDb && cafeLocations.length > 0) {
+        const updatedJson = JSON.stringify(cafeLocations);
+        config.cafe_locations = updatedJson;
+        await supabaseAdmin
+            .from('config')
+            .upsert({ key: 'cafe_locations', value: updatedJson }, { onConflict: 'key' });
     }
 
     return { config, cafeLocations };
@@ -159,7 +181,7 @@ export async function registerCoffeePurchase(
     });
 
     if (rpcErr) {
-        console.error("Coffee purchase RPC error:", rpcErr);
+        console.error("RPC Coffee purchase error:", rpcErr);
         return { error: "Eroare la salvarea cafelei: " + rpcErr.message };
     }
 
